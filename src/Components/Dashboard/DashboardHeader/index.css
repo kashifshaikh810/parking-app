@@ -1,0 +1,31 @@
+.myHeader {
+  background-color: #1976d2;
+  color: #f1f1f1;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  height: 7vh;
+  padding: 7px;
+  padding-left: 14vh;
+  padding-top: 15px;
+  font-variant: small-caps;
+}
+
+.icon {
+  position: absolute;
+  left: 30px;
+  right: 2vh;
+  top: 17px;
+  bottom: 0;
+}
+
+.logBtn {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  position: absolute;
+  left: 100vh;
+  right: 2vh;
+  top: 9px;
+  bottom: 91vh;
+}

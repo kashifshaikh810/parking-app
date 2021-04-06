@@ -1,0 +1,48 @@
+.FirstContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #dfdfdf;
+  height: 91vh;
+}
+
+.signup {
+  height: 78vh;
+  width: 60vh;
+  align-items: center;
+}
+
+.signupTxt {
+  margin-top: 6vh;
+  text-align: center;
+  font-weight: bold;
+  font-variant: small-caps;
+}
+
+.signupLabel {
+  margin-bottom: 1vh;
+  margin-left: 15vh;
+}
+
+.signUpInput {
+  text-align: center;
+  margin-bottom: 2vh;
+}
+.submitBtn {
+  text-align: center;
+  cursor: pointer;
+}
+
+.signupRoutTxt {
+  text-align: center;
+}
+
+.navTxt {
+  font-variant: small-caps;
+}
+
+.clickHereTxt {
+  color: green;
+  font-weight: bold;
+  cursor: pointer;
+}
