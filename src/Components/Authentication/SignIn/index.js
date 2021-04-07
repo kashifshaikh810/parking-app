@@ -21,7 +21,7 @@ function SignIn() {
         await firebase.auth().signInWithEmailAndPassword(email, password);
         setEmail("");
         setPassword("");
-        history.push("/drawer");
+        history.push("/bookparking");
       } catch (err) {
         console.log(err?.message);
         setErrMsg(err?.message);
@@ -51,7 +51,7 @@ function SignIn() {
   }, []);
 
   if (firebase.auth()?.currentUser?.uid) {
-    history.push("/dashboard");
+    history.push("/bookparking");
   }
   return (
     <>

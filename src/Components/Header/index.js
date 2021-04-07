@@ -3,8 +3,8 @@ import "./index.css";
 
 const Header = () => {
   return (
-    <div className="header">
-      <h1 className="header">Parking Booking System</h1>
+    <div className="mainHeader">
+      <h1 className="mainHeader">Parking Booking System</h1>
     </div>
   );
 };

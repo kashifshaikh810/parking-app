@@ -1,0 +1,25 @@
+.viewBooking {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #303030;
+  height: 90.4vh;
+}
+
+.card {
+  width: 95%;
+  height: 18%;
+  margin-top: 10px;
+}
+
+.align {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  margin-top: 3%;
+  margin-left: 3%;
+  font-weight: bold;
+  font-size: 6vh;
+}

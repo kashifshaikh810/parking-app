@@ -1,0 +1,65 @@
+.bookParking {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #303030;
+  height: 90.4vh;
+}
+
+.parkingCard {
+  width: 90%;
+  height: 80%;
+}
+
+.parkingHeading {
+  margin-left: 15px;
+  font-weight: bold;
+  font-size: 5vh;
+  border-bottom: 1px solid #b3b3b3;
+  padding-bottom: 10px;
+  width: 95%;
+}
+
+.main {
+  border-bottom: 1px solid #b3b3b3;
+  width: 95.4%;
+  margin-left: 14px;
+  padding-bottom: 4px;
+}
+
+.para {
+  display: flex;
+  margin-left: 12px;
+}
+
+.iconContainer {
+  position: absolute;
+  top: 37%;
+  left: 85%;
+  right: 0;
+  bottom: 0;
+}
+
+.content {
+  width: 7vh;
+  height: 7vh;
+  border-radius: 4vh;
+  background-color: #c2185b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.myIcon {
+  color: #f1f1f1;
+  font-size: 30px;
+}
+
+.paraChild {
+  margin-left: 6px;
+}
+
+.paraParent {
+  font-weight: bold;
+}

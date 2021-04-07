@@ -1,109 +1,74 @@
 import React from "react";
-import DashboardHeader from "../Dashboard/DashboardHeader/index";
-import {
-  Drawer as MUIDrawer,
-  List,
-  ListItem,
-  ListItemText,
-} from "@material-ui/core";
-import clsx from "clsx";
+import DashboardHeader from "../DashboardHeader/index";
+import { Drawer, List, ListItem, ListItemText } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { withRouter } from "react-router-dom";
-
-const drawerWidth = 240;
+import { withRouter, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+  drawer: {
+    width: 200,
   },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+  item: {
+    borderBottom: "1px solid #b3b3b3",
+    paddingBottom: "13px",
+    marginTop: "4vh",
+    fontVariantCaps: "small-caps",
+    fontWeight: "bold",
+    color: "#b3b3b3",
   },
 }));
 
-const Drawer = (props) => {
-  const { history } = props;
+const DrawerHome = () => {
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
-  const itemsList = [
-    {
-      text: "Book Parking",
-      onClick: () => history.push("/dashboard"),
-    },
-    {
-      text: "Home",
-      onClick: () => history.push("/"),
-    },
-  ];
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const parkingHandler = () => {
+    history.push("/bookparking");
+    setOpen(false);
   };
 
-  const handleDrawerClose = () => {
+  const bookHandler = () => {
+    history.push("/viewbooking");
+    setOpen(false);
+  };
+
+  const feedHandler = () => {
+    history.push("/feedback");
     setOpen(false);
   };
 
   return (
     <>
-      <DashboardHeader
-        handleDrawerClose={handleDrawerClose}
-        handleDrawerOpen={handleDrawerOpen}
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      />
-      <MUIDrawer
-        open={open}
-        className={classes.drawer}
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <List style={{ width: 180 }}>
-          {itemsList.map((item, index) => {
-            const { text, onClick } = item;
-            return (
-              <ListItem button key={text} onClick={onClick}>
-                <ListItemText primary={text} />
-              </ListItem>
-            );
-          })}
+      <DashboardHeader setOpen={setOpen} />
+      <Drawer open={open} onClose={() => setOpen(false)}>
+        <List disablePadding className={classes.drawer}>
+          <ListItem button>
+            <ListItemText
+              primary="Book Parking"
+              onClick={parkingHandler}
+              className={classes.item}
+            />
+          </ListItem>
+          <ListItem button>
+            <ListItemText
+              onClick={bookHandler}
+              primary="View Booking"
+              className={classes.item}
+            />
+          </ListItem>
+
+          <ListItem button>
+            <ListItemText
+              onClick={feedHandler}
+              primary="FeedBack"
+              className={classes.item}
+            />
+          </ListItem>
         </List>
-      </MUIDrawer>
+      </Drawer>
     </>
   );
 };
 
-export default withRouter(Drawer);
+export default withRouter(DrawerHome);
