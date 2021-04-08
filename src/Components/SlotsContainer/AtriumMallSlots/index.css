@@ -1,0 +1,21 @@
+.atriumMall {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #303030;
+  height: 90.4vh;
+}
+
+.atriumMallCard {
+  width: 95%;
+  height: 95%;
+}
+
+.atriumMallHead {
+  margin-left: 15px;
+  font-weight: bold;
+  font-size: 5vh;
+  border-bottom: 1px solid #b3b3b3;
+  padding-bottom: 5px;
+  width: 95%;
+}

@@ -10,14 +10,13 @@ import SignUp from "../Authentication/Signup/index";
 import firebase from "firebase/app";
 import Drawer from "../Drawer/index";
 import Dashboard from "../BookParking/index";
-// import { makeStyles } from "@material-ui/core/styles";
 import ViewBooking from "../ViewBooking/index";
 import FeedBack from "../FeedBack/index";
-
-// const useStyles = makeStyles({});
+import AtriumMall from "../SlotsContainer/AtriumMallSlots/index";
+import DolmenMall from "../SlotsContainer/DolmenMallSlots/index";
+import OceanMall from "../SlotsContainer/OceanMallSlots/index";
 
 function Routing() {
-  // const classes = useStyles();
   const [uid, setUid] = useState();
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -35,6 +34,9 @@ function Routing() {
           <Route path="/bookparking" component={Dashboard} />
           <Route path="/viewbooking" component={ViewBooking} />
           <Route path="/feedback" component={FeedBack} />
+          <Route path="/atriummall" component={AtriumMall} />
+          <Route path="/dolmenmall" component={DolmenMall} />
+          <Route path="/oceanmall" component={OceanMall} />
         </Switch>
       </Router>
     </div>

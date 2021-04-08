@@ -1,9 +1,23 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Card } from "@material-ui/core";
-import "./index.css";
 import { Launch } from "@material-ui/icons";
+import "./index.css";
 
 function BookParking() {
+  let history = useHistory();
+  const goToAtriumMall = () => {
+    history.push("/atriummall");
+  };
+
+  const goToDolmenMall = () => {
+    history.push("/dolmenmall");
+  };
+
+  const goToOceanMall = () => {
+    history.push("/oceanmall");
+  };
+
   return (
     <div className="bookParking">
       <Card elevation={3} className="parkingCard">
@@ -17,7 +31,7 @@ function BookParking() {
             <p className="paraParent"> Address :</p>
             <p className="paraChild"> Sadar, Abdullah Haroon Road</p>
             <div className="iconContainer">
-              <div className="content">
+              <div className="content" onClick={goToAtriumMall}>
                 <Launch className="myIcon" />
               </div>
             </div>
@@ -41,7 +55,7 @@ function BookParking() {
                 bottom: 0,
               }}
             >
-              <div className="content">
+              <div className="content" onClick={goToDolmenMall}>
                 <Launch className="myIcon" />
               </div>
             </div>
@@ -65,7 +79,7 @@ function BookParking() {
                 bottom: 0,
               }}
             >
-              <div className="content">
+              <div className="content" onClick={goToOceanMall}>
                 <Launch className="myIcon" />
               </div>
             </div>
