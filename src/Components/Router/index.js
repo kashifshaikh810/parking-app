@@ -27,10 +27,10 @@ function Routing() {
   return (
     <div>
       <Router>
-        {uid ? <Drawer /> : <Redirect to="/login" />}
+        {uid ? <Drawer /> : null}
         <Switch>
-          <Route path="/signup" component={SignUp} />
           <Route exact path="/login" component={SignIn} />
+          <Route path="/signup" component={SignUp} />
           <Route path="/bookparking" component={Dashboard} />
           <Route path="/viewbooking" component={ViewBooking} />
           <Route path="/feedback" component={FeedBack} />

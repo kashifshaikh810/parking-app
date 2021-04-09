@@ -71,4 +71,4 @@ const DrawerHome = () => {
   );
 };
 
-export default withRouter(DrawerHome);
+export default DrawerHome;

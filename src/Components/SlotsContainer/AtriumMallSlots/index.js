@@ -1,9 +1,7 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import {
   Card,
   TextField,
-  Box,
   FormControl,
   Select,
   MenuItem,
@@ -31,10 +29,17 @@ const useStyles = makeStyles((theme) => ({
 
 function AtriumMall() {
   const [age, setAge] = React.useState("");
+  const [slots, setSlots] = React.useState("");
   const classes = useStyles();
+
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+
+  const handle = (event) => {
+    setSlots(event.target.value);
+  };
+
   return (
     <div className="atriumMall">
       <Card elevation={3} className="atriumMallCard">
@@ -87,7 +92,7 @@ function AtriumMall() {
               marginLeft: 17,
             }}
           >
-            Select Hours :
+            End Time :
           </label>
           <div>
             <FormControl className={classes.formControl} color="secondary">
@@ -116,16 +121,63 @@ function AtriumMall() {
               </Select>
             </FormControl>
           </div>
+
+          <label
+            style={{
+              fontWeight: "bold",
+              marginTop: 10,
+              fontSize: "15px",
+              marginLeft: 17,
+            }}
+          >
+            Slots :
+          </label>
+          <div>
+            <FormControl className={classes.formControl} color="secondary">
+              <Select
+                className={classes.selectEmpty}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={slots}
+                onChange={handle}
+              >
+                <MenuItem>
+                  <em>Select Slot</em>
+                </MenuItem>
+                <p style={{ marginLeft: 15, cursor: "pointer" }} value={1}>
+                  Slot 1
+                </p>
+                <p style={{ marginLeft: 15, cursor: "pointer" }} value={2}>
+                  Slot 2
+                </p>
+                <p style={{ marginLeft: 15, cursor: "pointer" }} value={3}>
+                  Slot 3
+                </p>
+                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
+                  Slot 4
+                </p>
+                <p style={{ marginLeft: 15, cursor: "pointer" }} value={3}>
+                  Slot 5
+                </p>
+                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
+                  Slot 6
+                </p>
+                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
+                  Slot 7
+                </p>
+              </Select>
+            </FormControl>
+          </div>
         </form>
         <div style={{ marginLeft: 15 }}>
           <p style={{ fontWeight: "bold", color: "red" }}>
             Please select the Date & Time & Hours first -- Then Click on the
-            Select Slot button
+            Book Slot button
           </p>
         </div>
 
         <div style={{ marginLeft: 15 }}>
-          <Button variant="contained">select Slot</Button>
+          <Button variant="contained">Book Slot</Button>
         </div>
 
         <div style={{ marginLeft: 15, marginTop: 20 }}>
@@ -142,14 +194,19 @@ function AtriumMall() {
           </p>
         </div>
 
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
           <div
             style={{
               height: "16vh",
               width: "20vh",
               borderRadius: "4vh",
-              backgroundColor: "red",
-              marginLeft: 10,
+              backgroundColor: "#b0bec5",
               cursor: "pointer",
             }}
           >
@@ -169,7 +226,7 @@ function AtriumMall() {
               height: "16vh",
               width: "20vh",
               borderRadius: "4vh",
-              backgroundColor: "red",
+              backgroundColor: "#b0bec5",
               marginLeft: 10,
               cursor: "pointer",
             }}
@@ -190,7 +247,7 @@ function AtriumMall() {
               height: "16vh",
               width: "20vh",
               borderRadius: "4vh",
-              backgroundColor: "red",
+              backgroundColor: "#b0bec5",
               marginLeft: 10,
               cursor: "pointer",
             }}
@@ -211,7 +268,7 @@ function AtriumMall() {
               height: "16vh",
               width: "20vh",
               borderRadius: "4vh",
-              backgroundColor: "red",
+              backgroundColor: "#b0bec5",
               marginLeft: 10,
               cursor: "pointer",
             }}
@@ -232,7 +289,7 @@ function AtriumMall() {
               height: "16vh",
               width: "20vh",
               borderRadius: "4vh",
-              backgroundColor: "red",
+              backgroundColor: "#b0bec5",
               marginLeft: 10,
               cursor: "pointer",
             }}
@@ -253,7 +310,7 @@ function AtriumMall() {
               height: "16vh",
               width: "20vh",
               borderRadius: "4vh",
-              backgroundColor: "red",
+              backgroundColor: "#b0bec5",
               marginLeft: 10,
               cursor: "pointer",
             }}
@@ -274,7 +331,7 @@ function AtriumMall() {
               height: "16vh",
               width: "20vh",
               borderRadius: "4vh",
-              backgroundColor: "red",
+              backgroundColor: "#b0bec5",
               marginLeft: 10,
               marginTop: 20,
               cursor: "pointer",

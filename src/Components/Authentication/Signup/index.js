@@ -83,7 +83,7 @@ function SignUp() {
         {/* <div className="signup"> */}
         <Card className="signup">
           <h2 className="signupTxt">Sign Up</h2>
-          <form onSubmit={(event) => handleSubmit(event)}>
+          <form autoComplete="on" onSubmit={(event) => handleSubmit(event)}>
             <div className="emailInput">
               <div className="signupLabel">
                 <label>

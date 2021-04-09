@@ -59,7 +59,7 @@ function SignIn() {
       <div className="container">
         <Card className="login">
           <h2 className="loginTxt">Sign In</h2>
-          <form onSubmit={(event) => handleSubmit(event)}>
+          <form autoComplete="on" onSubmit={(event) => handleSubmit(event)}>
             <div className="emailInput">
               <div className="label">
                 <label>
@@ -73,6 +73,7 @@ function SignIn() {
                   value={email}
                   onChange={(event) => emailHandleChange(event)}
                   required
+                  autoComplete="on"
                 />
               </div>
             </div>

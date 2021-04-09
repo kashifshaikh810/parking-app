@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Input } from "@material-ui/core";
 import "./index.css";
 import Button from "@material-ui/core/Button";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import List from "../ListComponent/index";
+import firebase from "firebase/app";
 
 function FeedBack() {
   const [feedBack, setFeedBack] = useState("");
@@ -11,13 +12,31 @@ function FeedBack() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let inputText = feedBack;
-    let arr = [...newArr];
-    arr.push(inputText);
-    setNewArr(arr);
+    let uid = firebase.auth()?.currentUser?.uid;
+    firebase.database().ref(`/feedBacks/${uid}`).push({
+      feedBack: feedBack,
+    });
+    // let inputText = feedBack;
+    // let arr = [...newArr];
+    // arr.push(inputText);
+    // setNewArr(arr);
     setFeedBack("");
   };
 
+  const getData = () => {
+    const uid = firebase.auth()?.currentUser?.uid;
+    firebase
+      .database()
+      .ref(`/feedBacks/${uid}`)
+      .on("value", (snapshot) => {
+        const data = snapshot.val() ? snapshot.val() : [];
+        setNewArr(data);
+      });
+  };
+
+  useEffect(async () => {
+    await getData();
+  }, []);
   const handleReply = (event, index) => {
     event.preventDefault();
   };
@@ -86,10 +105,19 @@ function FeedBack() {
             height: "500px",
           }}
         >
-          {newArr.map((item, index) => {
-            return <List item={item} index={index} handleReply={handleReply} />;
-          })}
-          <div style={{ paddingBottom: "23%" }} />
+          {newArr && Object.keys(newArr).length > 0
+            ? newArr &&
+              Object.keys(newArr).map((item, index) => {
+                return (
+                  <List
+                    item={newArr[item]}
+                    index={index}
+                    handleReply={handleReply}
+                  />
+                );
+              })
+            : null}
+          <div style={{ paddingBottom: "30%" }} />
         </div>
       </Card>
     </div>

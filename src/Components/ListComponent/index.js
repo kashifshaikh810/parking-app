@@ -42,7 +42,7 @@ const List = ({ item, handleReply, index }) => {
           marginLeft: 20,
         }}
       >
-        <li>FeedBack : {item}</li>
+        <li>FeedBack : {item.feedBack}</li>
         <div style={{ display: "flex" }}>
           <p style={{ margin: 0, padding: 0 }}>Reply :</p>
           {newArr.map((list, i) => {
