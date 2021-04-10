@@ -33,7 +33,7 @@ function SignUp() {
         setEmail("");
         setPassword("");
         await firebase.auth().signOut();
-        history.push("/login");
+        history.push("/");
       } catch (err) {
         console.log(err);
         setErrMsg(err?.message);
@@ -163,7 +163,7 @@ function SignUp() {
               </div>
               <div className="signupRoutTxt">
                 <p className="navTxt">Already Have An Account ?</p>
-                <Link to="/login">
+                <Link to="/">
                   <p className="clickHereTxt">Click here.</p>
                 </Link>
               </div>

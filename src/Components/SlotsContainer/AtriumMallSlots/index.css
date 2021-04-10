@@ -8,14 +8,19 @@
 
 .atriumMallCard {
   width: 95%;
-  height: 95%;
+  height: 98%;
 }
 
 .atriumMallHead {
   margin-left: 15px;
   font-weight: bold;
-  font-size: 5vh;
+  font-size: 4vh;
   border-bottom: 1px solid #b3b3b3;
   padding-bottom: 5px;
   width: 95%;
+}
+
+.locationHead {
+  font-weight: bold;
+  font-size: 15px;
 }

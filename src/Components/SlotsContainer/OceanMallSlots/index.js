@@ -7,6 +7,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import "./index.css";
+import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function OceanMall() {
+  const { location } = useParams();
   const [age, setAge] = React.useState("");
   const [slots, setSlots] = React.useState("");
   const classes = useStyles();
@@ -39,10 +41,34 @@ function OceanMall() {
   const handle = (event) => {
     setSlots(event.target.value);
   };
+
+  console.log(location);
+
   return (
     <div className="OceanMall">
       <Card elevation={3} className="OceanMallCard">
         <h2 className="OceanMallHead">Select Timings...</h2>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "20%",
+              borderBottom: "1px solid #b3b3b3",
+              marginBottom: 15,
+            }}
+          >
+            <h2 className="locationHead">Your Location :</h2>
+            <p style={{ marginLeft: 7 }}>{location}</p>
+          </div>
+        </div>
         <form className={classes.container} noValidate>
           <label
             style={{

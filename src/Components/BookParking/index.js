@@ -7,15 +7,15 @@ import "./index.css";
 function BookParking() {
   let history = useHistory();
   const goToAtriumMall = () => {
-    history.push("/atriummall");
+    history.push("/atriummall/AtriumMall");
   };
 
   const goToDolmenMall = () => {
-    history.push("/dolmenmall");
+    history.push("/dolmenmall/DolmenMall");
   };
 
   const goToOceanMall = () => {
-    history.push("/oceanmall");
+    history.push("/oceanmall/OceanMall");
   };
 
   return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   TextField,
@@ -7,8 +7,10 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import "./index.css";
+import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import firebase from "firebase/app";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -28,22 +30,70 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AtriumMall() {
-  const [age, setAge] = React.useState("");
-  const [slots, setSlots] = React.useState("");
+  const { location } = useParams();
+  const [seletedHours, setSeletedHours] = useState("");
+  const [slots, setSlots] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSeletedTime] = useState("");
   const classes = useStyles();
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleHours = (event) => {
+    setSeletedHours(event.target.value);
   };
 
-  const handle = (event) => {
+  const handleSlots = (event) => {
     setSlots(event.target.value);
+  };
+
+  const handleDate = (event) => {
+    setSelectedDate(event.target.value);
+  };
+
+  const handleTime = (event) => {
+    setSeletedTime(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    let uid = firebase.auth()?.currentUser?.uid;
+    firebase.database().ref(`/bookings/${uid}`).push({
+      selectDate: selectedDate,
+      StartTime: selectedTime,
+      Location: location,
+      EndTime: seletedHours,
+      Slots: slots,
+    });
+    alert("Your Data Is Submit Us...");
+    setSeletedHours("");
+    setSlots("");
+    setSeletedTime("");
+    setSelectedDate("");
   };
 
   return (
     <div className="atriumMall">
       <Card elevation={3} className="atriumMallCard">
         <h2 className="atriumMallHead">Select Timings...</h2>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "20%",
+              borderBottom: "1px solid #b3b3b3",
+              marginBottom: 15,
+            }}
+          >
+            <h2 className="locationHead">Your Location :</h2>
+            <p style={{ marginLeft: 7 }}>{location}</p>
+          </div>
+        </div>
         <form className={classes.container} noValidate>
           <label
             style={{
@@ -63,6 +113,8 @@ function AtriumMall() {
             InputLabelProps={{
               shrink: true,
             }}
+            value={selectedDate}
+            onChange={handleDate}
           />
 
           <label
@@ -83,6 +135,8 @@ function AtriumMall() {
             InputLabelProps={{
               shrink: true,
             }}
+            value={selectedTime}
+            onChange={handleTime}
           />
           <label
             style={{
@@ -100,11 +154,11 @@ function AtriumMall() {
                 className={classes.selectEmpty}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
-                onChange={handleChange}
+                value={seletedHours}
+                onChange={handleHours}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>Select Hours</em>
                 </MenuItem>
                 <p style={{ marginLeft: 15, cursor: "pointer" }} value={1}>
                   1 hours
@@ -139,7 +193,7 @@ function AtriumMall() {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={slots}
-                onChange={handle}
+                onChange={handleSlots}
               >
                 <MenuItem>
                   <em>Select Slot</em>
@@ -176,7 +230,7 @@ function AtriumMall() {
           </p>
         </div>
 
-        <div style={{ marginLeft: 15 }}>
+        <div style={{ marginLeft: 15 }} onClick={handleSubmit}>
           <Button variant="contained">Book Slot</Button>
         </div>
 
