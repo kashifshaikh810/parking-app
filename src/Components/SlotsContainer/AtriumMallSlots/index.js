@@ -35,38 +35,49 @@ function AtriumMall() {
   const [slots, setSlots] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSeletedTime] = useState("");
+  const [err, setErr] = useState("");
   const classes = useStyles();
 
   const handleHours = (event) => {
     setSeletedHours(event.target.value);
+    setErr("");
   };
 
   const handleSlots = (event) => {
     setSlots(event.target.value);
+    setErr("");
   };
 
   const handleDate = (event) => {
     setSelectedDate(event.target.value);
+    setErr("");
   };
 
   const handleTime = (event) => {
     setSeletedTime(event.target.value);
+    setErr("");
   };
 
   const handleSubmit = () => {
-    let uid = firebase.auth()?.currentUser?.uid;
-    firebase.database().ref(`/bookings/${uid}`).push({
-      selectDate: selectedDate,
-      StartTime: selectedTime,
-      Location: location,
-      EndTime: seletedHours,
-      Slots: slots,
-    });
-    alert("Your Data Is Submit Us...");
-    setSeletedHours("");
-    setSlots("");
-    setSeletedTime("");
-    setSelectedDate("");
+    if (seletedHours && slots && selectedDate && selectedTime) {
+      let uid = firebase.auth()?.currentUser?.uid;
+      firebase.database().ref(`/bookings/${uid}`).push({
+        selectDate: selectedDate,
+        StartTime: selectedTime,
+        Location: location,
+        EndTime: seletedHours,
+        Slots: slots,
+      });
+      setSeletedHours("");
+      setSlots("");
+      setSeletedTime("");
+      setSelectedDate("");
+      alert("Your Data Is Submit Us...");
+    } else {
+      setErr(
+        "Please select the | Date | Time | Hours | Slot | first -- Then Click on the Book Slot button"
+      );
+    }
   };
 
   return (
@@ -149,31 +160,17 @@ function AtriumMall() {
             End Time :
           </label>
           <div>
-            <FormControl className={classes.formControl} color="secondary">
-              <Select
-                className={classes.selectEmpty}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={seletedHours}
-                onChange={handleHours}
-              >
-                <MenuItem value="">
-                  <em>Select Hours</em>
-                </MenuItem>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={1}>
-                  1 hours
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={2}>
-                  2 hours
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={3}>
-                  3 hours
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  4 hours
-                </p>
-              </Select>
-            </FormControl>
+            <TextField
+              color="secondary"
+              id="time"
+              type="time"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={seletedHours}
+              onChange={handleHours}
+            />
           </div>
 
           <label
@@ -224,9 +221,8 @@ function AtriumMall() {
           </div>
         </form>
         <div style={{ marginLeft: 15 }}>
-          <p style={{ fontWeight: "bold", color: "red" }}>
-            Please select the Date & Time & Hours first -- Then Click on the
-            Book Slot button
+          <p style={{ fontWeight: "bold", color: "red", textAlign: "center" }}>
+            {err}
           </p>
         </div>
 

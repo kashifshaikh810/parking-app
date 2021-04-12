@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Input } from "@material-ui/core";
+import { Card, Input, CircularProgress } from "@material-ui/core";
 import "./index.css";
 import Button from "@material-ui/core/Button";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
@@ -8,6 +8,7 @@ import firebase from "firebase/app";
 
 function FeedBack() {
   const [feedBack, setFeedBack] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [newArr, setNewArr] = useState([]);
 
   const handleSubmit = (event) => {
@@ -16,14 +17,15 @@ function FeedBack() {
     firebase.database().ref(`/feedBacks/${uid}`).push({
       feedBack: feedBack,
     });
+    setFeedBack("");
     // let inputText = feedBack;
     // let arr = [...newArr];
     // arr.push(inputText);
     // setNewArr(arr);
-    setFeedBack("");
   };
 
   const getData = () => {
+    setIsLoading(true);
     const uid = firebase.auth()?.currentUser?.uid;
     firebase
       .database()
@@ -31,12 +33,14 @@ function FeedBack() {
       .on("value", (snapshot) => {
         const data = snapshot.val() ? snapshot.val() : [];
         setNewArr(data);
+        setIsLoading(false);
       });
   };
 
-  useEffect(async () => {
-    await getData();
-  }, []);
+  useEffect(() => {
+    getData();
+  }, [isLoading]);
+
   const handleReply = (event, index) => {
     event.preventDefault();
   };
@@ -97,16 +101,28 @@ function FeedBack() {
             Feed-Back's
           </p>
         </div>
-        <div
-          style={{
-            overflowY: "scroll",
-            width: "100%",
-            float: "left",
-            height: "500px",
-          }}
-        >
-          {newArr && Object.keys(newArr).length > 0
-            ? newArr &&
+        {isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "40%",
+            }}
+          >
+            <CircularProgress color="secondary" />
+          </div>
+        ) : (
+          <div
+            style={{
+              overflowY: "scroll",
+              width: "100%",
+              float: "left",
+              height: "500px",
+            }}
+          >
+            {newArr && Object.keys(newArr).length > 0 ? (
+              newArr &&
               Object.keys(newArr).map((item, index) => {
                 return (
                   <List
@@ -116,9 +132,12 @@ function FeedBack() {
                   />
                 );
               })
-            : null}
-          <div style={{ paddingBottom: "30%" }} />
-        </div>
+            ) : (
+              <h1 style={{ textAlign: "center" }}>No Feed Back's</h1>
+            )}
+            <div style={{ paddingBottom: "25%" }} />
+          </div>
+        )}
       </Card>
     </div>
   );

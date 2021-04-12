@@ -27,28 +27,8 @@ const DashboardHeader = ({ setOpen }) => {
   let history = useHistory();
   const handleLogOut = async () => {
     await firebase.auth().signOut();
-    history.push("/login");
+    history.push("/");
   };
-  {
-    /* <h1 className="myHeader">Parking Booking System</h1>
-  <div className="icon">
-    <MenuIcon
-      style={{ color: "#f1f1f1", marginLeft: "25vh", cursor: "pointer" }}
-      fontSize="large"
-      onClick={handleDrawerClose || handleDrawerOpen}
-    />
-  </div>
-  <div className="logBtn">
-    <Button
-      style={{ backgroundColor: "#f1f1f1" }}
-      onClick={handleLogOut}
-      type="submit"
-      variant="outlined"
-    >
-      Log Out
-    </Button>
-  </div> */
-  }
 
   return (
     <>

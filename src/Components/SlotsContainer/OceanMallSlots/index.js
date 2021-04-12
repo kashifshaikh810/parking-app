@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   TextField,
@@ -10,6 +10,7 @@ import "./index.css";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import firebase from "firebase/app";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,19 +31,55 @@ const useStyles = makeStyles((theme) => ({
 
 function OceanMall() {
   const { location } = useParams();
-  const [age, setAge] = React.useState("");
-  const [slots, setSlots] = React.useState("");
+  const [seletedHours, setSeletedHours] = useState("");
+  const [slots, setSlots] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSeletedTime] = useState("");
+  const [err, setErr] = useState("");
   const classes = useStyles();
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleHours = (event) => {
+    setSeletedHours(event.target.value);
+    setErr("");
   };
 
-  const handle = (event) => {
+  const handleSlots = (event) => {
     setSlots(event.target.value);
+    setErr("");
   };
 
-  console.log(location);
+  const handleDate = (event) => {
+    setSelectedDate(event.target.value);
+    setErr("");
+  };
+
+  const handleTime = (event) => {
+    setSeletedTime(event.target.value);
+    setErr("");
+  };
+
+  const handleSubmit = () => {
+    if (seletedHours && slots && selectedDate && selectedTime) {
+      let uid = firebase.auth()?.currentUser?.uid;
+      console.log(selectedTime, seletedHours, selectedDate, slots, location);
+      firebase.database().ref(`/bookings/${uid}`).push({
+        selectDate: selectedDate,
+        StartTime: selectedTime,
+        Location: location,
+        EndTime: seletedHours,
+        Slots: slots,
+      });
+      setSeletedHours("");
+      setSlots("");
+      setSeletedTime("");
+      setSelectedDate("");
+      alert("Your Data Is Submit Us...");
+    } else {
+      setErr(
+        "Please select the | Date | Time | Hours | Slot | first -- Then Click on the Book Slot button"
+      );
+    }
+  };
 
   return (
     <div className="OceanMall">
@@ -88,6 +125,8 @@ function OceanMall() {
             InputLabelProps={{
               shrink: true,
             }}
+            value={selectedDate}
+            onChange={handleDate}
           />
 
           <label
@@ -108,6 +147,8 @@ function OceanMall() {
             InputLabelProps={{
               shrink: true,
             }}
+            value={selectedTime}
+            onChange={handleTime}
           />
           <label
             style={{
@@ -120,31 +161,17 @@ function OceanMall() {
             End Time :
           </label>
           <div>
-            <FormControl className={classes.formControl} color="secondary">
-              <Select
-                className={classes.selectEmpty}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={age}
-                onChange={handleChange}
-              >
-                <MenuItem value="">
-                  <em>Select Hours</em>
-                </MenuItem>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={1}>
-                  1 hours
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={2}>
-                  2 hours
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={3}>
-                  3 hours
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  4 hours
-                </p>
-              </Select>
-            </FormControl>
+            <TextField
+              color="secondary"
+              id="time"
+              type="time"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={seletedHours}
+              onChange={handleHours}
+            />
           </div>
 
           <label
@@ -164,7 +191,7 @@ function OceanMall() {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={slots}
-                onChange={handle}
+                onChange={handleSlots}
               >
                 <MenuItem>
                   <em>Select Slot</em>
@@ -201,13 +228,12 @@ function OceanMall() {
           </div>
         </form>
         <div style={{ marginLeft: 15 }}>
-          <p style={{ fontWeight: "bold", color: "red" }}>
-            Please select the Date & Time & Hours first -- Then Click on the
-            Book Slot button
+          <p style={{ fontWeight: "bold", color: "red", textAlign: "center" }}>
+            {err}
           </p>
         </div>
 
-        <div style={{ marginLeft: 15 }}>
+        <div style={{ marginLeft: 15 }} onClick={handleSubmit}>
           <Button variant="contained">Book Slot</Button>
         </div>
 
