@@ -6,7 +6,7 @@ import firebase from "firebase/app";
 const ViewBooking = () => {
   const [userData, setUserData] = useState([]);
   const [adminData, setAdminData] = useState([]);
-  const [isAdminLoading, setIsAdminLoading] = useState(false);
+  const [isLoader, setIsLoader] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [adminRoll, setAdminRoll] = useState("");
 
@@ -23,8 +23,8 @@ const ViewBooking = () => {
       });
   };
 
-  const admin = () => {
-    setIsAdminLoading(true);
+  const getAdminData = () => {
+    setIsLoader(true);
     firebase
       .database()
       .ref("/bookings/")
@@ -39,7 +39,7 @@ const ViewBooking = () => {
           });
         });
         setAdminData(allData);
-        setIsAdminLoading(false);
+        setIsLoader(false);
       });
   };
 
@@ -56,9 +56,9 @@ const ViewBooking = () => {
 
   useEffect(() => {
     getUserData();
-    admin();
+    getAdminData();
     getAdminRoll();
-  }, [isLoading && isAdminLoading]);
+  }, [isLoading]);
 
   return (
     <div className="viewBooking">
@@ -69,18 +69,23 @@ const ViewBooking = () => {
         <Card
           elevation={20}
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
             width: "60%",
-            height: "60%",
             marginLeft: "22%",
             overflow: "overlay",
           }}
         >
-          {!!adminRoll ? (
+          {adminRoll !== "admin@mail.com" ? (
             isLoading ? (
-              <CircularProgress color="secondary" />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "20vh",
+                }}
+              >
+                <CircularProgress color="secondary" />
+              </div>
             ) : (
               <>
                 {userData?.length ? (
@@ -130,8 +135,17 @@ const ViewBooking = () => {
           )}
 
           {adminRoll === "admin@mail.com" ? (
-            isAdminLoading ? (
-              <CircularProgress color="secondary" />
+            isLoader ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "40vh",
+                }}
+              >
+                <CircularProgress color="secondary" />
+              </div>
             ) : (
               <>
                 {adminData?.length ? (

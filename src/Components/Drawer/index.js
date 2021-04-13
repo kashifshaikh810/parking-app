@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DashboardHeader from "../DashboardHeader/index";
 import { Drawer, List, ListItem, ListItemText } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { withRouter, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import firebase from "firebase/app";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -20,8 +22,24 @@ const useStyles = makeStyles((theme) => ({
 
 const DrawerHome = () => {
   const history = useHistory();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [adminRoll, setAdminRoll] = useState("");
   const classes = useStyles();
+
+  const getAdminRoll = () => {
+    let uid = firebase.auth()?.currentUser?.uid;
+    firebase
+      .database()
+      .ref(`/newUser/${uid}`)
+      .on("value", (snapshot) => {
+        let data = snapshot.val() ? Object.values(snapshot.val()) : [];
+        setAdminRoll(data[0]);
+      });
+  };
+
+  useEffect(() => {
+    getAdminRoll();
+  }, [history]);
 
   const parkingHandler = () => {
     history.push("/bookparking");
@@ -38,18 +56,33 @@ const DrawerHome = () => {
     setOpen(false);
   };
 
+  const viewUsersHandler = () => {
+    history.push("/viewusers");
+    setOpen(false);
+  };
+
+  const handleLogOut = async () => {
+    await firebase.auth().signOut();
+    history.push("/");
+  };
+
   return (
     <>
       <DashboardHeader setOpen={setOpen} />
       <Drawer open={open} onClose={() => setOpen(false)}>
         <List disablePadding className={classes.drawer}>
-          <ListItem button>
-            <ListItemText
-              primary="Book Parking"
-              onClick={parkingHandler}
-              className={classes.item}
-            />
-          </ListItem>
+          {adminRoll !== "admin@mail.com" ? (
+            <ListItem button>
+              <ListItemText
+                primary="Book Parking"
+                onClick={parkingHandler}
+                className={classes.item}
+              />
+            </ListItem>
+          ) : (
+            []
+          )}
+
           <ListItem button>
             <ListItemText
               onClick={bookHandler}
@@ -61,7 +94,26 @@ const DrawerHome = () => {
           <ListItem button>
             <ListItemText
               onClick={feedHandler}
-              primary="FeedBack"
+              primary="Feed Back"
+              className={classes.item}
+            />
+          </ListItem>
+
+          {adminRoll === "admin@mail.com" ? (
+            <ListItem button>
+              <ListItemText
+                onClick={viewUsersHandler}
+                primary="View Users"
+                className={classes.item}
+              />
+            </ListItem>
+          ) : (
+            []
+          )}
+          <ListItem button>
+            <ListItemText
+              onClick={handleLogOut}
+              primary="Log Out"
               className={classes.item}
             />
           </ListItem>

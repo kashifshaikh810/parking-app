@@ -10,6 +10,7 @@ import FeedBack from "../FeedBack/index";
 import AtriumMall from "../SlotsContainer/AtriumMallSlots/index";
 import DolmenMall from "../SlotsContainer/DolmenMallSlots/index";
 import OceanMall from "../SlotsContainer/OceanMallSlots/index";
+import ViewUsers from "../ViewUsers/index";
 
 function Routing() {
   const [uid, setUid] = useState();
@@ -18,16 +19,17 @@ function Routing() {
       let uid = user?.uid;
       setUid(uid);
     });
-  }, []);
+  }, [uid]);
   return (
     <div>
       <Router>
-        {uid ? <Drawer /> : null}
+        {uid ? <Drawer /> : ""}
         <Switch>
           <Route exact path="/" component={SignIn} />
           <Route path="/signup" component={SignUp} />
           <Route path="/bookparking" component={Dashboard} />
           <Route path="/viewbooking" component={ViewBooking} />
+          <Route path="/viewusers" component={ViewUsers} />
           <Route path="/feedback" component={FeedBack} />
           <Route path="/atriummall/:location" component={AtriumMall} />
           <Route path="/dolmenmall/:location" component={DolmenMall} />

@@ -10,6 +10,8 @@ function FeedBack() {
   const [feedBack, setFeedBack] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [newArr, setNewArr] = useState([]);
+  const [adminRoll, setAdminRoll] = useState("");
+  const [newData, setNewData] = useState([]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,8 +39,40 @@ function FeedBack() {
       });
   };
 
+  const getAdminRoll = () => {
+    let uid = firebase.auth()?.currentUser?.uid;
+    firebase
+      .database()
+      .ref(`/newUser/${uid}`)
+      .on("value", (snapshot) => {
+        let data = snapshot.val() ? Object.values(snapshot.val()) : [];
+        setAdminRoll(data[0]);
+      });
+  };
+
+  const getAdminData = () => {
+    firebase
+      .database()
+      .ref(`/feedBacks/`)
+      .on("value", (snapshot) => {
+        let data = snapshot.val() ? Object.values(snapshot.val()) : [];
+        let allData = [];
+        data.forEach((test, i) => {
+          let aa = Object.values(test);
+          let newData = Object.values(aa);
+          newData?.forEach((data) => {
+            allData.push(data);
+            console.log(allData);
+          });
+        });
+        setNewData(allData);
+      });
+  };
+
   useEffect(() => {
     getData();
+    getAdminRoll();
+    getAdminData();
   }, [isLoading]);
 
   const handleReply = (event, index) => {
@@ -62,6 +96,7 @@ function FeedBack() {
               onChange={(event) => feedBackHandleChange(event)}
               required
               color="secondary"
+              disabled={adminRoll === "admin@mail.com" ? adminRoll : ""}
             />
           </div>
           <br />
@@ -72,7 +107,12 @@ function FeedBack() {
               paddingBottom: 20,
             }}
           >
-            <Button type="submit" variant="contained" color="secondary">
+            <Button
+              disabled={adminRoll === "admin@mail.com" ? adminRoll : ""}
+              type="submit"
+              variant="contained"
+              color="secondary"
+            >
               Send
             </Button>
           </div>
@@ -101,42 +141,88 @@ function FeedBack() {
             Feed-Back's
           </p>
         </div>
-        {isLoading ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "40%",
-            }}
-          >
-            <CircularProgress color="secondary" />
-          </div>
+        {adminRoll !== "admin@mail.com" ? (
+          isLoading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "40%",
+              }}
+            >
+              <CircularProgress color="secondary" />
+            </div>
+          ) : (
+            <div
+              style={{
+                overflowY: "scroll",
+                width: "100%",
+                float: "left",
+                height: "500px",
+              }}
+            >
+              {newArr && Object.keys(newArr).length > 0 ? (
+                newArr &&
+                Object.keys(newArr).map((item, index) => {
+                  return (
+                    <List
+                      item={newArr[item]}
+                      index={index}
+                      handleReply={handleReply}
+                    />
+                  );
+                })
+              ) : (
+                <h1 style={{ textAlign: "center" }}>No Feed Back's</h1>
+              )}
+              <div style={{ paddingBottom: "25%" }} />
+            </div>
+          )
+        ) : null}
+
+        {adminRoll === "admin@mail.com" ? (
+          isLoading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "40%",
+              }}
+            >
+              <CircularProgress color="secondary" />
+            </div>
+          ) : (
+            <div
+              style={{
+                overflowY: "scroll",
+                width: "100%",
+                float: "left",
+                height: "500px",
+              }}
+            >
+              {newData && Object.keys(newData).length > 0 ? (
+                newData &&
+                Object.keys(newData).map((item, index) => {
+                  return (
+                    <List
+                      item={newData[item]}
+                      index={index}
+                      handleReply={handleReply}
+                    />
+                  );
+                })
+              ) : (
+                <h1 style={{ textAlign: "center" }}>
+                  No Feed back's Avalaible
+                </h1>
+              )}
+              <div style={{ paddingBottom: "25%" }} />
+            </div>
+          )
         ) : (
-          <div
-            style={{
-              overflowY: "scroll",
-              width: "100%",
-              float: "left",
-              height: "500px",
-            }}
-          >
-            {newArr && Object.keys(newArr).length > 0 ? (
-              newArr &&
-              Object.keys(newArr).map((item, index) => {
-                return (
-                  <List
-                    item={newArr[item]}
-                    index={index}
-                    handleReply={handleReply}
-                  />
-                );
-              })
-            ) : (
-              <h1 style={{ textAlign: "center" }}>No Feed Back's</h1>
-            )}
-            <div style={{ paddingBottom: "25%" }} />
-          </div>
+          []
         )}
       </Card>
     </div>

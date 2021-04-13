@@ -66,7 +66,6 @@ const List = ({ item, handleReply, index }) => {
   const handleClick = () => {
     setIsLoading(false);
   };
-  console.log(adminRoll);
 
   return (
     <div>
