@@ -34,6 +34,15 @@ function AtriumMall() {
   const [seletedHours, setSeletedHours] = useState("");
   const [slots, setSlots] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [arr, setArr] = useState([
+    "Car Slot 1",
+    "Car Slot 2",
+    "Car Slot 3",
+    "Car Slot 4",
+    "Car Slot 5",
+    "Car Slot 6",
+    "Car Slot 7",
+  ]);
   const [selectedTime, setSeletedTime] = useState("");
   const [err, setErr] = useState("");
   const classes = useStyles();
@@ -195,27 +204,13 @@ function AtriumMall() {
                 <MenuItem>
                   <em>Select Slot</em>
                 </MenuItem>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={1}>
-                  Slot 1
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={2}>
-                  Slot 2
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={3}>
-                  Slot 3
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  Slot 4
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={3}>
-                  Slot 5
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  Slot 6
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  Slot 7
-                </p>
+                {arr.map((items) => {
+                  return (
+                    <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
+                      {items}
+                    </p>
+                  );
+                })}
               </Select>
             </FormControl>
           </div>
@@ -229,7 +224,6 @@ function AtriumMall() {
         <div style={{ marginLeft: 15 }} onClick={handleSubmit}>
           <Button variant="contained">Book Slot</Button>
         </div>
-
         <div style={{ marginLeft: 15, marginTop: 20 }}>
           <p
             style={{
@@ -244,7 +238,39 @@ function AtriumMall() {
           </p>
         </div>
 
-        <div
+        {arr.map((items) => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  height: "16vh",
+                  width: "20vh",
+                  borderRadius: "4vh",
+                  backgroundColor: "#b0bec5",
+                  cursor: "pointer",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <p style={{ marginTop: "35%" }}>{items}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* <div
           style={{
             display: "flex",
             flexWrap: "wrap",
@@ -397,7 +423,7 @@ function AtriumMall() {
               <p style={{ marginTop: "35%" }}>Car Slot 7</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </Card>
     </div>
   );

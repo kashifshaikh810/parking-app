@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import firebase from "firebase/app";
 import Para from "../ParaGraph/index";
 
-const List = ({ item, handleReply, index }) => {
+const List = ({ item, handleReply, index, id }) => {
   const [reply, setReply] = useState("");
   const [newArr, setNewArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,15 +12,17 @@ const List = ({ item, handleReply, index }) => {
 
   const handleSub = (event, index) => {
     event.preventDefault();
-    let uid = firebase.auth()?.currentUser?.uid;
-    firebase.database().ref(`/adminReply/${uid}`).push({
-      Reply: reply,
-    });
-    // let input = reply;
-    // let data = [...newArr];
-    // data.push(input);
-    // setNewArr(data);
-    handleReply(event, index);
+    console.log(item, id);
+    // let uid = firebase.auth()?.currentUser?.uid;
+    // let user = { feedBack: item.feedBack, Reply: reply };
+    // firebase.database().ref(`/feedBacks/${id.pushKey}`).set({
+    //   user,
+    // });
+    // // let input = reply;
+    // // let data = [...newArr];
+    // // data.push(input);
+    // // setNewArr(data);
+    // handleReply(event, index);
     setIsLoading(true);
     setReply("");
   };
@@ -32,7 +34,6 @@ const List = ({ item, handleReply, index }) => {
       .ref(`/adminReply/${uid}`)
       .on("value", (snapshot) => {
         const data = snapshot.val() ? snapshot.val() : [];
-        console.log(data);
         setNewArr(data);
       });
   };

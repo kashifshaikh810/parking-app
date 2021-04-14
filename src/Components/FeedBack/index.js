@@ -12,6 +12,7 @@ function FeedBack() {
   const [newArr, setNewArr] = useState([]);
   const [adminRoll, setAdminRoll] = useState("");
   const [newData, setNewData] = useState([]);
+  const [keys, setKeys] = useState({});
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,10 +21,6 @@ function FeedBack() {
       feedBack: feedBack,
     });
     setFeedBack("");
-    // let inputText = feedBack;
-    // let arr = [...newArr];
-    // arr.push(inputText);
-    // setNewArr(arr);
   };
 
   const getData = () => {
@@ -58,14 +55,14 @@ function FeedBack() {
         let data = snapshot.val() ? Object.values(snapshot.val()) : [];
         let allData = [];
         data.forEach((test, i) => {
+          let dKey = Object.keys(test);
           let aa = Object.values(test);
           let newData = Object.values(aa);
-          newData?.forEach((data) => {
+          newData?.forEach((data, i) => {
             allData.push(data);
-            console.log(allData);
           });
+          setNewData(allData);
         });
-        setNewData(allData);
       });
   };
 
@@ -210,6 +207,8 @@ function FeedBack() {
                       item={newData[item]}
                       index={index}
                       handleReply={handleReply}
+                      id={keys}
+                      // id={item}
                     />
                   );
                 })
