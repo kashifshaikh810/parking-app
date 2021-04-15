@@ -53,13 +53,14 @@ function FeedBack() {
       .ref(`/feedBacks/`)
       .on("value", (snapshot) => {
         let data = snapshot.val() ? Object.values(snapshot.val()) : [];
+        let pushUid = snapshot.val() ? Object.keys(snapshot.val()) : []
         let allData = [];
-        data.forEach((test, i) => {
-          let dKey = Object.keys(test);
+        data.forEach((test, j) => {
+          let pushKey = Object.keys(test);
           let aa = Object.values(test);
           let newData = Object.values(aa);
           newData?.forEach((data, i) => {
-            allData.push(data);
+            allData.push({...data, id: pushKey[i], uid: pushUid[j]});
           });
           setNewData(allData);
         });
@@ -79,7 +80,6 @@ function FeedBack() {
   const feedBackHandleChange = (event) => {
     setFeedBack(event.target.value);
   };
-
   return (
     <div className="feedBack">
       <Card elevation={3} className="feedBackCard">
@@ -93,7 +93,7 @@ function FeedBack() {
               onChange={(event) => feedBackHandleChange(event)}
               required
               color="secondary"
-              disabled={adminRoll === "admin@mail.com" ? adminRoll : ""}
+              disabled={Boolean(adminRoll === "admin@mail.com")}
             />
           </div>
           <br />
@@ -105,7 +105,7 @@ function FeedBack() {
             }}
           >
             <Button
-              disabled={adminRoll === "admin@mail.com" ? adminRoll : ""}
+              disabled={Boolean(adminRoll === "admin@mail.com")}
               type="submit"
               variant="contained"
               color="secondary"
@@ -200,14 +200,14 @@ function FeedBack() {
               }}
             >
               {newData && Object.keys(newData).length > 0 ? (
-                newData &&
-                Object.keys(newData).map((item, index) => {
+                newData.map((item, index) => {
                   return (
                     <List
-                      item={newData[item]}
+                      item={item}
                       index={index}
                       handleReply={handleReply}
                       id={keys}
+                      key={index.toString()}
                       // id={item}
                     />
                   );

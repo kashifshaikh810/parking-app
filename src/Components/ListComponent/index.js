@@ -9,19 +9,15 @@ const List = ({ item, handleReply, index, id }) => {
   const [newArr, setNewArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [adminRoll, setAdminRoll] = useState("");
-
+  
+  // console.log(item.id);
   const handleSub = (event, index) => {
     event.preventDefault();
-    console.log(item, id);
-    // let uid = firebase.auth()?.currentUser?.uid;
-    // let user = { feedBack: item.feedBack, Reply: reply };
-    // firebase.database().ref(`/feedBacks/${id.pushKey}`).set({
-    //   user,
-    // });
-    // // let input = reply;
-    // // let data = [...newArr];
-    // // data.push(input);
-    // // setNewArr(data);
+    firebase.database().ref(`/feedBacks/${item.uid}/${item.id}`).set({ feedBack: item.feedBack, Reply: reply });
+    // let input = reply;
+    // let data = [...newArr];
+    // data.push(input);
+    // setNewArr(data);
     // handleReply(event, index);
     setIsLoading(true);
     setReply("");
@@ -31,7 +27,7 @@ const List = ({ item, handleReply, index, id }) => {
     const uid = firebase.auth()?.currentUser?.uid;
     firebase
       .database()
-      .ref(`/adminReply/${uid}`)
+      .ref(`/feedBacks/${uid}`)
       .on("value", (snapshot) => {
         const data = snapshot.val() ? snapshot.val() : [];
         setNewArr(data);
@@ -68,6 +64,8 @@ const List = ({ item, handleReply, index, id }) => {
     setIsLoading(false);
   };
 
+  console.log(newArr);
+
   return (
     <div>
       <ul
@@ -83,12 +81,7 @@ const List = ({ item, handleReply, index, id }) => {
         </li>
         <div style={{ display: "flex" }}>
           <p style={{ margin: 0, padding: 0, fontWeight: "bold" }}>Reply :</p>
-          {newArr && Object.keys(newArr).length > 0
-            ? newArr &&
-              Object.keys(newArr).map((list, index) => {
-                return <Para item={newArr[list]} />;
-              })
-            : null}
+            <Para item={item} />
         </div>
         <div
           style={{
