@@ -20,10 +20,11 @@ function Routing() {
       setUid(uid);
     });
   }, [uid]);
+
   return (
     <div>
       <Router>
-        {uid ? <Drawer /> : ""}
+        {uid ? <Drawer /> : []}
         <Switch>
           <Route exact path="/" component={SignIn} />
           <Route path="/signup" component={SignUp} />

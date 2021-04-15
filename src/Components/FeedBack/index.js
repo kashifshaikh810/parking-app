@@ -53,7 +53,7 @@ function FeedBack() {
       .ref(`/feedBacks/`)
       .on("value", (snapshot) => {
         let data = snapshot.val() ? Object.values(snapshot.val()) : [];
-        let pushUid = snapshot.val() ? Object.keys(snapshot.val()) : []
+        let pushUid = snapshot.val() ? Object.keys(snapshot.val()) : [];
         let allData = [];
         data.forEach((test, j) => {
           let pushKey = Object.keys(test);
@@ -130,7 +130,7 @@ function FeedBack() {
           <p
             style={{
               fontSize: 20,
-              marginTop: 10,
+              // marginTop: 10,
               marginLeft: 10,
               fontWeight: "bold",
             }}
@@ -208,7 +208,6 @@ function FeedBack() {
                       handleReply={handleReply}
                       id={keys}
                       key={index.toString()}
-                      // id={item}
                     />
                   );
                 })

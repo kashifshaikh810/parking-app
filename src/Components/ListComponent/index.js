@@ -10,15 +10,9 @@ const List = ({ item, handleReply, index, id }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [adminRoll, setAdminRoll] = useState("");
   
-  // console.log(item.id);
   const handleSub = (event, index) => {
     event.preventDefault();
     firebase.database().ref(`/feedBacks/${item.uid}/${item.id}`).set({ feedBack: item.feedBack, Reply: reply });
-    // let input = reply;
-    // let data = [...newArr];
-    // data.push(input);
-    // setNewArr(data);
-    // handleReply(event, index);
     setIsLoading(true);
     setReply("");
   };
@@ -63,8 +57,6 @@ const List = ({ item, handleReply, index, id }) => {
   const handleClick = () => {
     setIsLoading(false);
   };
-
-  console.log(newArr);
 
   return (
     <div>
