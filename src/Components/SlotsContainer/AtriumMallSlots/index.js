@@ -50,7 +50,7 @@ function AtriumMall() {
   ]);
   const [selectedTime, setSeletedTime] = useState("");
   const [err, setErr] = useState("");
-  const [bookSlots, setBookSlots] = useState()
+  const [bookSlots, setBookSlots] = useState('')
   const classes = useStyles();
 
   const handleHours = (event) => {
@@ -74,24 +74,31 @@ function AtriumMall() {
   };
 
   const handleSubmit = () => {
-    if (seletedHours && slots && selectedDate && selectedTime) {
-      let uid = firebase.auth()?.currentUser?.uid;
-      firebase.database().ref(`/bookings/${uid}`).push({
-        selectDate: selectedDate,
-        StartTime: selectedTime,
-        Location: location,
-        EndTime: seletedHours,
-        Slots: slots,
-      });
-      setSeletedHours("");
-      setSlots("");
-      setSeletedTime("");
-      setSelectedDate("");
-      alert("Your Data Is Submit Us...");
-    } else {
-      setErr(
-        "Please select the | Date | Time | Hours | Slot | first -- Then Click on the Book Slot button"
-      );
+    console.log(selectedTime, 'start time', seletedHours, 'end time');
+    let date = new Date();
+    let userDate = new Date(selectedDate)
+    if(userDate.getTime() >=  date.getTime() && seletedHours > selectedTime ){
+    //       if (seletedHours && slots && selectedDate && selectedTime) {
+    //   let uid = firebase.auth()?.currentUser?.uid;
+    //   firebase.database().ref(`/bookings/${uid}`).push({
+    //     selectDate: selectedDate,
+    //     StartTime: selectedTime,
+    //     Location: location,
+    //     EndTime: seletedHours,
+    //     Slots: slots,
+    //   });
+    //   setSeletedHours("");
+    //   setSlots("");
+    //   setSeletedTime("");
+    //   setSelectedDate("");
+    //   alert("Your Data Is Submit Us...");
+    // } else {
+    //   setErr(
+    //     "Please select the | Date | Time | Hours | Slot | first -- Then Click on the Book Slot button"
+    //   );
+    // }
+    }else{
+      alert('select the valid date')
     }
   };
 

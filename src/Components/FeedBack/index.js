@@ -12,7 +12,6 @@ function FeedBack() {
   const [newArr, setNewArr] = useState([]);
   const [adminRoll, setAdminRoll] = useState("");
   const [newData, setNewData] = useState([]);
-  const [keys, setKeys] = useState({});
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -206,7 +205,6 @@ function FeedBack() {
                       item={item}
                       index={index}
                       handleReply={handleReply}
-                      id={keys}
                       key={index.toString()}
                     />
                   );

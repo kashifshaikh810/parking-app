@@ -6,7 +6,6 @@ import Para from "../ParaGraph/index";
 
 const List = ({ item, handleReply, index, id }) => {
   const [reply, setReply] = useState("");
-  const [newArr, setNewArr] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [adminRoll, setAdminRoll] = useState("");
   
@@ -15,17 +14,6 @@ const List = ({ item, handleReply, index, id }) => {
     firebase.database().ref(`/feedBacks/${item.uid}/${item.id}`).set({ feedBack: item.feedBack, Reply: reply });
     setIsLoading(true);
     setReply("");
-  };
-
-  const getReplyData = () => {
-    const uid = firebase.auth()?.currentUser?.uid;
-    firebase
-      .database()
-      .ref(`/feedBacks/${uid}`)
-      .on("value", (snapshot) => {
-        const data = snapshot.val() ? snapshot.val() : [];
-        setNewArr(data);
-      });
   };
 
   const getAdminRoll = () => {
@@ -40,7 +28,6 @@ const List = ({ item, handleReply, index, id }) => {
   };
 
   useEffect(() => {
-    getReplyData();
     getAdminRoll();
   }, [isLoading]);
 
