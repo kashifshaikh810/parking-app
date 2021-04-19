@@ -36,6 +36,17 @@ function OceanMall() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSeletedTime] = useState("");
   const [err, setErr] = useState("");
+  const [arr, setArr] = useState([
+    {title: "Car Slot 1"},
+    {title: "Car Slot 2"},
+    {title: "Car Slot 3"},
+    {title: "Car Slot 4"},
+    {title: "Car Slot 5"},
+    {title: "Car Slot 6"},
+    {title: "Car Slot 7"},
+    {title: "Car Slot 8"},
+    {title: "Car Slot 9"},
+  ]);
   const classes = useStyles();
 
   const handleHours = (event) => {
@@ -59,6 +70,9 @@ function OceanMall() {
   };
 
   const handleSubmit = () => {
+    let date = new Date();
+    let userDate = new Date(selectedDate)
+    if(userDate.getTime() >=  date.getTime() && seletedHours > selectedTime ){
     if (seletedHours && slots && selectedDate && selectedTime) {
       let uid = firebase.auth()?.currentUser?.uid;
       console.log(selectedTime, seletedHours, selectedDate, slots, location);
@@ -79,6 +93,9 @@ function OceanMall() {
         "Please select the | Date | Time | Hours | Slot | first -- Then Click on the Book Slot button"
       );
     }
+  }else{
+    alert("select the valid date & time")
+  }
   };
 
   return (
@@ -193,36 +210,15 @@ function OceanMall() {
                 value={slots}
                 onChange={handleSlots}
               >
-                <MenuItem>
+               <MenuItem value="">
                   <em>Select Slot</em>
                 </MenuItem>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={1}>
-                  Slot 1
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={2}>
-                  Slot 2
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={3}>
-                  Slot 3
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  Slot 4
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={3}>
-                  Slot 5
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  Slot 6
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  Slot 7
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  Slot 8
-                </p>
-                <p style={{ marginLeft: 15, cursor: "pointer" }} value={4}>
-                  Slot 9
-                </p>
+                {arr.map((items, index) => {
+                  
+                  return (
+                    <MenuItem key={index} value={items.title}>{items.title}</MenuItem>
+                    );
+                  })}
               </Select>
             </FormControl>
           </div>
@@ -251,204 +247,40 @@ function OceanMall() {
           </p>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}
-        >
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              cursor: "pointer",
-            }}
-          >
-            <div
+        { arr.map((items, index) => {
+          return (
+            <div key={index}
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                float: 'left',
+                flexWrap: 'wrap',
+                marginLeft: 10,
+                marginTop: 10
               }}
             >
-              <p style={{ marginTop: "35%" }}>Car Slot 1</p>
+              <div
+                style={{
+                  height: "16vh",
+                  width: "20vh",
+                  borderRadius: "4vh",
+                  backgroundColor: "#b0bec5",
+                  cursor: "pointer",
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <p >{items.title}</p>
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              marginLeft: 10,
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ marginTop: "35%" }}>Car Slot 2</p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              marginLeft: 10,
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ marginTop: "35%" }}>Car Slot 3</p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              marginLeft: 10,
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ marginTop: "35%" }}>Car Slot 4</p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              marginLeft: 10,
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ marginTop: "35%" }}>Car Slot 5</p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              marginLeft: 10,
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ marginTop: "35%" }}>Car Slot 6</p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              marginLeft: 10,
-              marginTop: 10,
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ marginTop: "35%" }}>Car Slot 7</p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              marginLeft: 10,
-              marginTop: 10,
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ marginTop: "35%" }}>Car Slot 8</p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              height: "16vh",
-              width: "20vh",
-              borderRadius: "4vh",
-              backgroundColor: "#b0bec5",
-              marginLeft: 10,
-              marginTop: 10,
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p style={{ marginTop: "35%" }}>Car Slot 9</p>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </Card>
     </div>
   );

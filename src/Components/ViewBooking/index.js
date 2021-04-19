@@ -112,7 +112,7 @@ const ViewBooking = () => {
                           <tr>
                             <td style={{ textAlign: "center" }}>Id No. {i}</td>
                             <td tyle={{ textAlign: "center" }}>{newData.Location}</td>
-                            <td tyle={{ textAlign: "center" }}>Slot No. {newData.Slots}</td>
+                            <td tyle={{ textAlign: "center" }}>{newData.Slots}</td>
                             <td style={{ textAlign: "center" }}>
                               {newData.StartTime}
                             </td>
@@ -126,7 +126,7 @@ const ViewBooking = () => {
                     </table>
                   </div>
                 ) : (
-                  []
+                  <p style={{textAlign: 'center'}}>no bookings</p>
                 )}
               </>
             )
