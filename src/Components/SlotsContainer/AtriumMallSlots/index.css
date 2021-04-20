@@ -24,3 +24,9 @@
   font-weight: bold;
   font-size: 15px;
 }
+
+.book{
+  background-color: red;
+  width: 50vh;
+  border-radius: 30px;
+}

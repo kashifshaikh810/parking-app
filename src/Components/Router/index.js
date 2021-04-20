@@ -24,7 +24,7 @@ function Routing() {
   return (
     <div>
       <Router>
-        {uid ? <Drawer /> : []}
+       {  uid ? <Drawer /> : [] }
         <Switch>
           <Route exact path="/" component={SignIn} />
           <Route path="/signup" component={SignUp} />

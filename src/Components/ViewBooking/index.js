@@ -109,7 +109,7 @@ const ViewBooking = () => {
                       </thead>
                       {userData.map((newData, i) => {
                         return (
-                          <tr>
+                          <tr key={i}>
                             <td style={{ textAlign: "center" }}>Id No. {i}</td>
                             <td tyle={{ textAlign: "center" }}>{newData.Location}</td>
                             <td tyle={{ textAlign: "center" }}>{newData.Slots}</td>

@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   TextField,
-  FormControl,
-  Select,
-  MenuItem,
 } from "@material-ui/core";
 import "./index.css";
 import { useParams } from "react-router-dom";
@@ -37,28 +34,42 @@ const useStyles = makeStyles((theme) => ({
 function AtriumMall() {
   const { location } = useParams();
   const [seletedHours, setSeletedHours] = useState("");
-  const [slots, setSlots] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [arr, setArr] = useState([
-    {title: "Car Slot 1"},
-    {title: "Car Slot 2"},
-    {title: "Car Slot 3"},
-    {title: "Car Slot 4"},
-    {title: "Car Slot 5"},
-    {title: "Car Slot 6"},
-    {title: "Car Slot 7"},
+    {title: "Car Slot 1", booked: false},
+    {title: "Car Slot 2", booked: false},
+    {title: "Car Slot 3", booked: false},
+    {title: "Car Slot 4", booked: false},
+    {title: "Car Slot 5", booked: false},
+    {title: "Car Slot 6", booked: false},
+    {title: "Car Slot 7", booked: false},
   ]);
   const [selectedTime, setSeletedTime] = useState("");
+  const [hideSlot, setHideSlot] = useState(false);
   const [err, setErr] = useState("");
   const classes = useStyles();
+  const [bookSuccess, setBookSuccess] = useState("");
+  const [slotVal, setSlotVal] = useState("");
+  const [dateVal, setDateVal] = useState("");
+
+  useEffect(() => {
+    firebase.database().ref('/bookings/').on('value', (snapshot) => {
+      let snap = snapshot.val() ? Object.values(snapshot.val()) : []
+      let data = Object.values(snap)
+      data.forEach((item) => {
+        let shot = Object.values(item)
+        shot.forEach((newData) => {
+          let getDate = newData.selectDate;
+          let getSlot = newData.Slots;
+          setSlotVal(getSlot)
+          setDateVal(getDate)
+        })
+      })
+    })
+  },[location])
 
   const handleHours = (event) => {
     setSeletedHours(event.target.value);
-    setErr("");
-  };
-
-  const handleSlots = (event) => {
-    setSlots(event.target.value);
     setErr("");
   };
 
@@ -72,37 +83,39 @@ function AtriumMall() {
     setErr("");
   };
 
-  const handleSubmit = () => {
-    // let currArr = [...arr]
-    // currArr.splice(1, index)
-    // setArr(currArr)
-
+  const handleVerify = () => {
     let date = new Date();
     let userDate = new Date(selectedDate)
     if(userDate.getTime() >=  date.getTime() && seletedHours > selectedTime ){
-          if (seletedHours && slots && selectedDate && selectedTime) {
-      let uid = firebase.auth()?.currentUser?.uid;
-      firebase.database().ref(`/bookings/${uid}`).push({
-        selectDate: selectedDate,
-        StartTime: selectedTime,
-        Location: location,
-        EndTime: seletedHours,
-        Slots: slots,
-      });
-      setSeletedHours("");
-      setSlots("");
-      setSeletedTime("");
-      setSelectedDate("");
-      alert("Your Data Is Submit Us...");
-    } else {
-      setErr(
-        "Please select the | Date | Time | Hours | Slot | first -- Then Click on the Book Slot button"
-      );
-    }
+      setHideSlot(true)
     }else{
       alert('select the valid date & time')
+      setHideSlot(false)
     }
   };
+
+     const handleSubmit = (items) => {
+      if (seletedHours && selectedDate && selectedTime) {
+        let uid = firebase.auth()?.currentUser?.uid;
+        let slots = items.title
+        firebase.database().ref(`/bookings/${uid}`).push({
+          selectDate: selectedDate,
+          StartTime: selectedTime,
+          Location: location,
+          EndTime: seletedHours,
+          Slots: slots,
+        });
+        setSeletedHours("");
+        setSeletedTime("");
+        setSelectedDate("");
+        setHideSlot(false)
+        setBookSuccess('Booked Successfully')
+      } else {
+        setErr(
+          "Please select the | Date | Start Time | End Time | first -- Then Click on the Book Slot button"
+        );
+      }
+     } 
 
   return (
     <div className="atriumMall">
@@ -196,37 +209,7 @@ function AtriumMall() {
               onChange={handleHours}
             />
           </div>
-
-          <label
-            style={{
-              fontWeight: "bold",
-              marginTop: 10,
-              fontSize: "15px",
-              marginLeft: 17,
-            }}
-          >
-            Slots :
-          </label>
-          <div>
-            <FormControl className={classes.formControl} color="secondary">
-              <Select
-                labelId="demo-simple-select-label"
-                value={slots}
-                onChange={handleSlots}
-                id="demo-simple-select-helper"
-              >
-                <MenuItem value="">
-                  <em>Select Slot</em>
-                </MenuItem>
-                {arr.map((items, index) => {
-                  
-                  return (
-                    <MenuItem key={index} value={items.title}>{items.title}</MenuItem>
-                    );
-                  })}
-              </Select>
-            </FormControl>
-          </div>
+         
         </form>
         <div style={{ marginLeft: 15 }}>
           <p style={{ fontWeight: "bold", color: "red", textAlign: "center" }}>
@@ -234,7 +217,7 @@ function AtriumMall() {
           </p>
         </div>
 
-        <div style={{ marginLeft: 15 }} onClick={handleSubmit}>
+        <div style={{ marginLeft: 15 }} onClick={handleVerify}>
           <Button variant="contained">Book Slot</Button>
         </div>
         <div style={{ marginLeft: 15, marginTop: 20 }}>
@@ -247,12 +230,13 @@ function AtriumMall() {
               width: "97%",
             }}
           >
-            View Slots
+            View Available Slots
           </p>
         </div>
-        { arr.map((items, index) => {
+        {
+        hideSlot ? arr.map((items, index) => {
           return (
-            <div key={index}
+            <div key={index} onClick={() => handleSubmit(items)} 
               style={{
                 float: 'left',
                 flexWrap: 'wrap',
@@ -272,19 +256,23 @@ function AtriumMall() {
                 }}
               >
                 <div
+                  // className={slotVal === selectedDate ? "book" : ''}
                   style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
-                  <p >{items.title}</p>
+                  <p>{items.title}</p>
                 </div>
               </div>
             </div>
           );
-        })}
-
+        })
+      : []
+      // <h1 style={{fontWeight: 'bold', textAlign: 'center'}}>Please Choose the valid date & time then press the book slot button</h1>
+    }
+      <h1 style={{textAlign: 'center', color: 'green', fontWeight: 'bold'}}>{bookSuccess}</h1>
       </Card>
     </div>
   );
