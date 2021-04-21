@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import firebase from "firebase/app";
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -31,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+var format = 'hh:mm:ss';
+
 function AtriumMall() {
   const { location } = useParams();
   const [seletedHours, setSeletedHours] = useState("");
@@ -49,38 +52,64 @@ function AtriumMall() {
   const [err, setErr] = useState("");
   const classes = useStyles();
   const [bookSuccess, setBookSuccess] = useState("");
-  const [slotVal, setSlotVal] = useState("");
-  const [dateVal, setDateVal] = useState("");
 
   useEffect(() => {
     firebase.database().ref('/bookings/').on('value', (snapshot) => {
       let snap = snapshot.val() ? Object.values(snapshot.val()) : []
       let data = Object.values(snap)
-      data.forEach((item) => {
-        let shot = Object.values(item)
-        shot.forEach((newData) => {
-          let getDate = newData.selectDate;
-          let getSlot = newData.Slots;
-          setSlotVal(getSlot)
-          setDateVal(getDate)
-        })
-      })
-    })
-  },[location])
+      let shot = [];
+
+      data.forEach((item, i) => {
+        shot = [...Object.values(item), ...shot];
+      });
+      
+      let newData = {};
+
+      arr.forEach((prevSlots) => {
+        var bookings = shot.filter(booked => booked.Slots === prevSlots.title);
+        var found = false;
+
+        for(let i = 0; i< bookings.length; i++) {
+          let booked = bookings[i];
+          let time = moment(`${selectedTime}:00`, format);
+          let endTime = moment(`${seletedHours}:00`, format);
+          let beforeTime = moment(`${booked.StartTime}:00`, format);
+          let afterTime = moment(`${booked.EndTime}:00`, format);
+          if(booked.selectDate === selectedDate && (beforeTime.isBetween(time, endTime) || afterTime.isBetween(time, endTime))){ 
+            found = true;
+            break;
+          }else {
+            found = false;
+          }
+        }
+
+        // bookings.forEach((booked) => {
+          
+        // });
+        newData[prevSlots.title] = { ...prevSlots, booked: found };
+      });
+
+      setArr(Object.values(newData));
+
+    });
+  },[location, selectedDate, selectedTime, seletedHours])
 
   const handleHours = (event) => {
     setSeletedHours(event.target.value);
     setErr("");
+    setBookSuccess('')
   };
 
   const handleDate = (event) => {
     setSelectedDate(event.target.value);
     setErr("");
+    setBookSuccess('')
   };
 
   const handleTime = (event) => {
     setSeletedTime(event.target.value);
-    setErr("");
+    setBookSuccess('')
+    setErr("")
   };
 
   const handleVerify = () => {
@@ -116,7 +145,6 @@ function AtriumMall() {
         );
       }
      } 
-
   return (
     <div className="atriumMall">
       <Card elevation={3} className="atriumMallCard">
@@ -236,7 +264,7 @@ function AtriumMall() {
         {
         hideSlot ? arr.map((items, index) => {
           return (
-            <div key={index} onClick={() => handleSubmit(items)} 
+            <div key={index} onClick={() => !items.booked && handleSubmit(items)} 
               style={{
                 float: 'left',
                 flexWrap: 'wrap',
@@ -245,7 +273,15 @@ function AtriumMall() {
               }}
             >
               <div
-                style={{
+                style={items.booked ? {
+                  height: "16vh",
+                  width: "20vh",
+                  borderRadius: "4vh",
+                  backgroundColor: "red",
+                  cursor: "not-allowed",
+                  display: 'flex',
+                  justifyContent: 'center'
+                } :{
                   height: "16vh",
                   width: "20vh",
                   borderRadius: "4vh",
@@ -269,8 +305,9 @@ function AtriumMall() {
             </div>
           );
         })
-      : []
-      // <h1 style={{fontWeight: 'bold', textAlign: 'center'}}>Please Choose the valid date & time then press the book slot button</h1>
+      : 
+ !bookSuccess ?
+     <h1 style={{fontWeight: 'bold', textAlign: 'center'}}>Please Choose the valid date & time then view available slots</h1> : ''
     }
       <h1 style={{textAlign: 'center', color: 'green', fontWeight: 'bold'}}>{bookSuccess}</h1>
       </Card>
