@@ -75,17 +75,13 @@ function AtriumMall() {
           let endTime = moment(`${seletedHours}:00`, format);
           let beforeTime = moment(`${booked.StartTime}:00`, format);
           let afterTime = moment(`${booked.EndTime}:00`, format);
-          if(booked.selectDate === selectedDate && (beforeTime.isBetween(time, endTime) || afterTime.isBetween(time, endTime))){ 
+          if(booked.selectDate === selectedDate && (time.isBetween(beforeTime, afterTime) || endTime.isBetween(beforeTime, afterTime))){ 
             found = true;
             break;
           }else {
             found = false;
           }
         }
-
-        // bookings.forEach((booked) => {
-          
-        // });
         newData[prevSlots.title] = { ...prevSlots, booked: found };
       });
 
