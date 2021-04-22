@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  TextField,
-} from "@material-ui/core";
+import { Card, TextField } from "@material-ui/core";
 import "./index.css";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import firebase from "firebase/app";
-import moment from 'moment';  
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -28,24 +25,24 @@ const useStyles = makeStyles((theme) => ({
   select: {
     minWidth: 100,
     marginLeft: 10,
-    backgroundColor: 'green'
-  }
+    backgroundColor: "green",
+  },
 }));
 
-var format = 'hh:mm:ss';
+var format = "hh:mm:ss";
 
 function AtriumMall() {
   const { location } = useParams();
   const [seletedHours, setSeletedHours] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [arr, setArr] = useState([
-    {title: "Car Slot 1", booked: false},
-    {title: "Car Slot 2", booked: false},
-    {title: "Car Slot 3", booked: false},
-    {title: "Car Slot 4", booked: false},
-    {title: "Car Slot 5", booked: false},
-    {title: "Car Slot 6", booked: false},
-    {title: "Car Slot 7", booked: false},
+    { title: "Car Slot 1", booked: false },
+    { title: "Car Slot 2", booked: false },
+    { title: "Car Slot 3", booked: false },
+    { title: "Car Slot 4", booked: false },
+    { title: "Car Slot 5", booked: false },
+    { title: "Car Slot 6", booked: false },
+    { title: "Car Slot 7", booked: false },
   ]);
   const [selectedTime, setSeletedTime] = useState("");
   const [hideSlot, setHideSlot] = useState(false);
@@ -54,93 +51,102 @@ function AtriumMall() {
   const [bookSuccess, setBookSuccess] = useState("");
 
   useEffect(() => {
-    firebase.database().ref('/bookings/').on('value', (snapshot) => {
-      let snap = snapshot.val() ? Object.values(snapshot.val()) : []
-      let data = Object.values(snap)
-      let shot = [];
+    firebase
+      .database()
+      .ref(`/bookings/`)
+      .on("value", (snapshot) => {
+        console.log(snapshot.val());
+        let snap = snapshot.val() ? Object.values(snapshot.val()) : [];
+        let data = Object.values(snap);
+        let shot = [];
 
-      data.forEach((item, i) => {
-        shot = [...Object.values(item), ...shot];
-      });
-      
-      let newData = {};
+        data.forEach((item, i) => {
+          shot = [...Object.values(item), ...shot];
+        });
 
-      arr.forEach((prevSlots) => {
-        var bookings = shot.filter(booked => booked.Slots === prevSlots.title);
-        var found = false;
+        let newData = {};
 
-        for(let i = 0; i< bookings.length; i++) {
-          let booked = bookings[i];
-          let time = moment(`${selectedTime}:00`, format);
-          let endTime = moment(`${seletedHours}:00`, format);
-          let beforeTime = moment(`${booked.StartTime}:00`, format);
-          let afterTime = moment(`${booked.EndTime}:00`, format);
-          if(booked.selectDate === selectedDate && (time.isBetween(beforeTime, afterTime) || endTime.isBetween(beforeTime, afterTime))){ 
-            found = true;
-            break;
-          }else {
-            found = false;
+        arr.forEach((prevSlots) => {
+          var bookings = shot.filter(
+            (booked) => booked.Slots === prevSlots.title
+          );
+          var found = false;
+
+          for (let i = 0; i < bookings.length; i++) {
+            let booked = bookings[i];
+            let time = moment(`${selectedTime}:00`, format);
+            let endTime = moment(`${seletedHours}:00`, format);
+            let beforeTime = moment(`${booked.StartTime}:00`, format);
+            let afterTime = moment(`${booked.EndTime}:00`, format);
+            if (
+              booked.selectDate === selectedDate &&
+              (time.isBetween(beforeTime, afterTime) ||
+                endTime.isBetween(beforeTime, afterTime))
+            ) {
+              found = true;
+              break;
+            } else {
+              found = false;
+            }
           }
-        }
-        newData[prevSlots.title] = { ...prevSlots, booked: found };
+          newData[prevSlots.title] = { ...prevSlots, booked: found };
+        });
+
+        setArr(Object.values(newData));
       });
-
-      setArr(Object.values(newData));
-
-    });
-  },[location, selectedDate, selectedTime, seletedHours])
+  }, [selectedDate && selectedTime && seletedHours]);
 
   const handleHours = (event) => {
     setSeletedHours(event.target.value);
     setErr("");
-    setBookSuccess('')
+    setBookSuccess("");
   };
 
   const handleDate = (event) => {
     setSelectedDate(event.target.value);
     setErr("");
-    setBookSuccess('')
+    setBookSuccess("");
   };
 
   const handleTime = (event) => {
     setSeletedTime(event.target.value);
-    setBookSuccess('')
-    setErr("")
+    setBookSuccess("");
+    setErr("");
   };
 
   const handleVerify = () => {
     let date = new Date();
-    let userDate = new Date(selectedDate)
-    if(userDate.getTime() >=  date.getTime() && seletedHours > selectedTime ){
-      setHideSlot(true)
-    }else{
-      alert('select the valid date & time')
-      setHideSlot(false)
+    let userDate = new Date(selectedDate);
+    if (userDate.getTime() >= date.getTime() && seletedHours > selectedTime) {
+      setHideSlot(true);
+    } else {
+      alert("select the valid date & time");
+      setHideSlot(false);
     }
   };
 
-     const handleSubmit = (items) => {
-      if (seletedHours && selectedDate && selectedTime) {
-        let uid = firebase.auth()?.currentUser?.uid;
-        let slots = items.title
-        firebase.database().ref(`/bookings/${uid}`).push({
-          selectDate: selectedDate,
-          StartTime: selectedTime,
-          Location: location,
-          EndTime: seletedHours,
-          Slots: slots,
-        });
-        setSeletedHours("");
-        setSeletedTime("");
-        setSelectedDate("");
-        setHideSlot(false)
-        setBookSuccess('Booked Successfully')
-      } else {
-        setErr(
-          "Please select the | Date | Start Time | End Time | first -- Then Click on the Book Slot button"
-        );
-      }
-     } 
+  const handleSubmit = (items) => {
+    if (seletedHours && selectedDate && selectedTime) {
+      let uid = firebase.auth()?.currentUser?.uid;
+      let slots = items.title;
+      firebase.database().ref(`/bookings/${uid}/${location}`).push({
+        selectDate: selectedDate,
+        StartTime: selectedTime,
+        Location: location,
+        EndTime: seletedHours,
+        Slots: slots,
+      });
+      setSeletedHours("");
+      setSeletedTime("");
+      setSelectedDate("");
+      setHideSlot(false);
+      setBookSuccess("Booked Successfully");
+    } else {
+      setErr(
+        "Please select the | Date | Start Time | End Time | first -- Then Click on the Book Slot button"
+      );
+    }
+  };
   return (
     <div className="atriumMall">
       <Card elevation={3} className="atriumMallCard">
@@ -233,7 +239,6 @@ function AtriumMall() {
               onChange={handleHours}
             />
           </div>
-         
         </form>
         <div style={{ marginLeft: 15 }}>
           <p style={{ fontWeight: "bold", color: "red", textAlign: "center" }}>
@@ -257,55 +262,66 @@ function AtriumMall() {
             View Available Slots
           </p>
         </div>
-        {
-        hideSlot ? arr.map((items, index) => {
-          return (
-            <div key={index} onClick={() => !items.booked && handleSubmit(items)} 
-              style={{
-                float: 'left',
-                flexWrap: 'wrap',
-                marginLeft: 10,
-                marginTop: 10
-              }}
-            >
+        {hideSlot ? (
+          arr.map((items, index) => {
+            return (
               <div
-                style={items.booked ? {
-                  height: "16vh",
-                  width: "20vh",
-                  borderRadius: "4vh",
-                  backgroundColor: "red",
-                  cursor: "not-allowed",
-                  display: 'flex',
-                  justifyContent: 'center'
-                } :{
-                  height: "16vh",
-                  width: "20vh",
-                  borderRadius: "4vh",
-                  backgroundColor: "#b0bec5",
-                  cursor: "pointer",
-                  display: 'flex',
-                  justifyContent: 'center'
+                key={index}
+                onClick={() => !items.booked && handleSubmit(items)}
+                style={{
+                  float: "left",
+                  flexWrap: "wrap",
+                  marginLeft: 10,
+                  marginTop: 10,
                 }}
               >
                 <div
-                  // className={slotVal === selectedDate ? "book" : ''}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+                  style={
+                    items.booked
+                      ? {
+                          height: "16vh",
+                          width: "20vh",
+                          borderRadius: "4vh",
+                          backgroundColor: "red",
+                          cursor: "not-allowed",
+                          display: "flex",
+                          justifyContent: "center",
+                        }
+                      : {
+                          height: "16vh",
+                          width: "20vh",
+                          borderRadius: "4vh",
+                          backgroundColor: "#b0bec5",
+                          cursor: "pointer",
+                          display: "flex",
+                          justifyContent: "center",
+                        }
+                  }
                 >
-                  <p>{items.title}</p>
+                  <div
+                    // className={slotVal === selectedDate ? "book" : ''}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p>{items.title}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })
-      : 
- !bookSuccess ?
-     <h1 style={{fontWeight: 'bold', textAlign: 'center'}}>Please Choose the valid date & time then view available slots</h1> : ''
-    }
-      <h1 style={{textAlign: 'center', color: 'green', fontWeight: 'bold'}}>{bookSuccess}</h1>
+            );
+          })
+        ) : !bookSuccess ? (
+          <h1 style={{ fontWeight: "bold", textAlign: "center" }}>
+            Please Choose the valid date & time then view available slots
+          </h1>
+        ) : (
+          ""
+        )}
+        <h1 style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>
+          {bookSuccess}
+        </h1>
       </Card>
     </div>
   );
