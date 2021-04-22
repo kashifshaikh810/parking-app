@@ -1,16 +1,11 @@
-import React, { useState } from "react";
-import {
-  Card,
-  TextField,
-  FormControl,
-  Select,
-  MenuItem,
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Card, TextField } from "@material-ui/core";
 import "./index.css";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import firebase from "firebase/app";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -29,53 +24,107 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+var format = "hh:mm:ss";
+
 function OceanMall() {
   const { location } = useParams();
   const [seletedHours, setSeletedHours] = useState("");
-  const [slots, setSlots] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSeletedTime] = useState("");
+  const [hideSlot, setHideSlot] = useState(false);
+  const [bookSuccess, setBookSuccess] = useState("");
   const [err, setErr] = useState("");
   const [arr, setArr] = useState([
-    {title: "Car Slot 1"},
-    {title: "Car Slot 2"},
-    {title: "Car Slot 3"},
-    {title: "Car Slot 4"},
-    {title: "Car Slot 5"},
-    {title: "Car Slot 6"},
-    {title: "Car Slot 7"},
-    {title: "Car Slot 8"},
-    {title: "Car Slot 9"},
+    { title: "Car Slot 1", booked: false },
+    { title: "Car Slot 2", booked: false },
+    { title: "Car Slot 3", booked: false },
+    { title: "Car Slot 4", booked: false },
+    { title: "Car Slot 5", booked: false },
+    { title: "Car Slot 6", booked: false },
+    { title: "Car Slot 7", booked: false },
+    { title: "Car Slot 8", booked: false },
+    { title: "Car Slot 9", booked: false },
   ]);
   const classes = useStyles();
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref("/bookings/")
+      .on("value", (snapshot) => {
+        let snap = snapshot.val() ? Object.values(snapshot.val()) : [];
+        let data = Object.values(snap);
+        let shot = [];
+
+        data.forEach((item, i) => {
+          shot = [...Object.values(item), ...shot];
+        });
+
+        let newData = {};
+
+        arr.forEach((prevSlots) => {
+          var bookings = shot.filter(
+            (booked) => booked.Slots === prevSlots.title
+          );
+          var found = false;
+
+          for (let i = 0; i < bookings.length; i++) {
+            let booked = bookings[i];
+            let time = moment(`${selectedTime}:00`, format);
+            let endTime = moment(`${seletedHours}:00`, format);
+            let beforeTime = moment(`${booked.StartTime}:00`, format);
+            let afterTime = moment(`${booked.EndTime}:00`, format);
+            if (
+              booked.selectDate === selectedDate &&
+              (time.isBetween(beforeTime, afterTime) ||
+                endTime.isBetween(beforeTime, afterTime))
+            ) {
+              found = true;
+              break;
+            } else {
+              found = false;
+            }
+          }
+          newData[prevSlots.title] = { ...prevSlots, booked: found };
+        });
+
+        setArr(Object.values(newData));
+      });
+  }, [location, selectedDate, selectedTime, seletedHours]);
 
   const handleHours = (event) => {
     setSeletedHours(event.target.value);
     setErr("");
-  };
-
-  const handleSlots = (event) => {
-    setSlots(event.target.value);
-    setErr("");
+    setBookSuccess("");
   };
 
   const handleDate = (event) => {
     setSelectedDate(event.target.value);
     setErr("");
+    setBookSuccess("");
   };
 
   const handleTime = (event) => {
     setSeletedTime(event.target.value);
     setErr("");
+    setBookSuccess("");
   };
 
-  const handleSubmit = () => {
+  const handleVerify = () => {
     let date = new Date();
-    let userDate = new Date(selectedDate)
-    if(userDate.getTime() >=  date.getTime() && seletedHours > selectedTime ){
-    if (seletedHours && slots && selectedDate && selectedTime) {
+    let userDate = new Date(selectedDate);
+    if (userDate.getTime() >= date.getTime() && seletedHours > selectedTime) {
+      setHideSlot(true);
+    } else {
+      alert("select the valid date & time");
+      setHideSlot(false);
+    }
+  };
+
+  const handleSubmit = (items) => {
+    if (seletedHours && selectedDate && selectedTime) {
       let uid = firebase.auth()?.currentUser?.uid;
-      console.log(selectedTime, seletedHours, selectedDate, slots, location);
+      let slots = items.title;
       firebase.database().ref(`/bookings/${uid}`).push({
         selectDate: selectedDate,
         StartTime: selectedTime,
@@ -84,18 +133,15 @@ function OceanMall() {
         Slots: slots,
       });
       setSeletedHours("");
-      setSlots("");
       setSeletedTime("");
       setSelectedDate("");
-      alert("Your Data Is Submit Us...");
+      setHideSlot(false);
+      setBookSuccess("Booked Successfully");
     } else {
       setErr(
-        "Please select the | Date | Time | Hours | Slot | first -- Then Click on the Book Slot button"
+        "Please select the | Date | Start Time | End Time | first -- Then Click on the Book Slot button"
       );
     }
-  }else{
-    alert("select the valid date & time")
-  }
   };
 
   return (
@@ -190,38 +236,6 @@ function OceanMall() {
               onChange={handleHours}
             />
           </div>
-
-          <label
-            style={{
-              fontWeight: "bold",
-              marginTop: 10,
-              fontSize: "15px",
-              marginLeft: 17,
-            }}
-          >
-            Slots :
-          </label>
-          <div>
-            <FormControl className={classes.formControl} color="secondary">
-              <Select
-                className={classes.selectEmpty}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={slots}
-                onChange={handleSlots}
-              >
-               <MenuItem value="">
-                  <em>Select Slot</em>
-                </MenuItem>
-                {arr.map((items, index) => {
-                  
-                  return (
-                    <MenuItem key={index} value={items.title}>{items.title}</MenuItem>
-                    );
-                  })}
-              </Select>
-            </FormControl>
-          </div>
         </form>
         <div style={{ marginLeft: 15 }}>
           <p style={{ fontWeight: "bold", color: "red", textAlign: "center" }}>
@@ -229,7 +243,7 @@ function OceanMall() {
           </p>
         </div>
 
-        <div style={{ marginLeft: 15 }} onClick={handleSubmit}>
+        <div style={{ marginLeft: 15 }} onClick={handleVerify}>
           <Button variant="contained">Book Slot</Button>
         </div>
 
@@ -243,44 +257,69 @@ function OceanMall() {
               width: "97%",
             }}
           >
-            View Slots
+            View Available Slots
           </p>
         </div>
 
-        { arr.map((items, index) => {
-          return (
-            <div key={index}
-              style={{
-                float: 'left',
-                flexWrap: 'wrap',
-                marginLeft: 10,
-                marginTop: 10
-              }}
-            >
+        {hideSlot ? (
+          arr.map((items, index) => {
+            return (
               <div
+                key={index}
+                onClick={() => !items.booked && handleSubmit(items)}
                 style={{
-                  height: "16vh",
-                  width: "20vh",
-                  borderRadius: "4vh",
-                  backgroundColor: "#b0bec5",
-                  cursor: "pointer",
-                  display: 'flex',
-                  justifyContent: 'center'
+                  float: "left",
+                  flexWrap: "wrap",
+                  marginLeft: 10,
+                  marginTop: 10,
                 }}
               >
                 <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+                  style={
+                    items.booked
+                      ? {
+                          height: "16vh",
+                          width: "20vh",
+                          borderRadius: "4vh",
+                          backgroundColor: "red",
+                          cursor: "not-allowed",
+                          display: "flex",
+                          justifyContent: "center",
+                        }
+                      : {
+                          height: "16vh",
+                          width: "20vh",
+                          borderRadius: "4vh",
+                          backgroundColor: "#b0bec5",
+                          cursor: "pointer",
+                          display: "flex",
+                          justifyContent: "center",
+                        }
+                  }
                 >
-                  <p >{items.title}</p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p>{items.title}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : !bookSuccess ? (
+          <h1 style={{ fontWeight: "bold", textAlign: "center" }}>
+            Please Choose the valid date & time then view available slots
+          </h1>
+        ) : (
+          ""
+        )}
+        <h1 style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>
+          {bookSuccess}
+        </h1>
       </Card>
     </div>
   );

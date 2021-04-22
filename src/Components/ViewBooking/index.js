@@ -111,22 +111,28 @@ const ViewBooking = () => {
                         return (
                           <tr key={i}>
                             <td style={{ textAlign: "center" }}>Id No. {i}</td>
-                            <td tyle={{ textAlign: "center" }}>{newData.Location}</td>
-                            <td tyle={{ textAlign: "center" }}>{newData.Slots}</td>
+                            <td tyle={{ textAlign: "center" }}>
+                              {newData.Location}
+                            </td>
+                            <td tyle={{ textAlign: "center" }}>
+                              {newData.Slots}
+                            </td>
                             <td style={{ textAlign: "center" }}>
                               {newData.StartTime}
                             </td>
                             <td style={{ textAlign: "center" }}>
                               {newData.EndTime}
                             </td>
-                            <td tyle={{ textAlign: "center" }}>{newData.selectDate}</td>
+                            <td tyle={{ textAlign: "center" }}>
+                              {newData.selectDate}
+                            </td>
                           </tr>
                         );
                       })}
                     </table>
                   </div>
                 ) : (
-                  <p style={{textAlign: 'center'}}>no bookings</p>
+                  <p style={{ textAlign: "center" }}>no bookings</p>
                 )}
               </>
             )
@@ -175,15 +181,21 @@ const ViewBooking = () => {
                                 <td style={{ textAlign: "center" }}>
                                   Id No. {i}
                                 </td>
-                                <td style={{ textAlign: "center" }}>{adminData[data].Location}</td>
-                                <td style={{ textAlign: "center" }}>Slot No. {adminData[data].Slots}</td>
+                                <td style={{ textAlign: "center" }}>
+                                  {adminData[data].Location}
+                                </td>
+                                <td style={{ textAlign: "center" }}>
+                                  {adminData[data].Slots}
+                                </td>
                                 <td style={{ textAlign: "center" }}>
                                   {adminData[data].StartTime}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
                                   {adminData[data].EndTime}
                                 </td>
-                                <td style={{ textAlign: "center" }}>{adminData[data].selectDate}</td>
+                                <td style={{ textAlign: "center" }}>
+                                  {adminData[data].selectDate}
+                                </td>
                               </tr>
                             );
                           })

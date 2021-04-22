@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import firebase from "firebase/app";
-import moment from 'moment';
+import moment from 'moment';  
 
 const useStyles = makeStyles((theme) => ({
   container: {
