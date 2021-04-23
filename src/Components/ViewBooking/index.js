@@ -99,7 +99,7 @@ const ViewBooking = () => {
                     <table className="customers">
                       <thead>
                         <tr>
-                          <th style={{ textAlign: "center" }}>Id</th>
+                          <th style={{ textAlign: "center" }}>Id No</th>
                           <th style={{ textAlign: "center" }}>Location</th>
                           <th style={{ textAlign: "center" }}>Slot</th>
                           <th tyle={{ textAlign: "center" }}>Start Time</th>
@@ -110,7 +110,7 @@ const ViewBooking = () => {
                       {userData.map((newData, i) => {
                         return (
                           <tr key={i}>
-                            <td style={{ textAlign: "center" }}>Id No. {i}</td>
+                            <td style={{ textAlign: "center" }}>{i}</td>
                             <td tyle={{ textAlign: "center" }}>
                               {newData.Location}
                             </td>
@@ -165,7 +165,7 @@ const ViewBooking = () => {
                     <table className="customers">
                       <thead>
                         <tr>
-                          <th style={{ textAlign: "center" }}>Id</th>
+                          <th style={{ textAlign: "center" }}>Id No</th>
                           <th style={{ textAlign: "center" }}>Location</th>
                           <th style={{ textAlign: "center" }}>Slot</th>
                           <th style={{ textAlign: "center" }}>Start Time</th>
@@ -179,7 +179,7 @@ const ViewBooking = () => {
                             return (
                               <tr>
                                 <td style={{ textAlign: "center" }}>
-                                  Id No. {i}
+                                  {i}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
                                   {adminData[data].Location}

@@ -94,7 +94,7 @@ function AtriumMall() {
 
         setArr(Object.values(newData));
       });
-  }, [selectedDate && selectedTime && seletedHours]);
+  }, [location, selectedDate, selectedTime, seletedHours]);
 
   const handleHours = (event) => {
     setSeletedHours(event.target.value);
@@ -129,7 +129,7 @@ function AtriumMall() {
     if (seletedHours && selectedDate && selectedTime) {
       let uid = firebase.auth()?.currentUser?.uid;
       let slots = items.title;
-      firebase.database().ref(`/bookings/${uid}/${location}`).push({
+      firebase.database().ref(`/bookings/${uid}`).push({
         selectDate: selectedDate,
         StartTime: selectedTime,
         Location: location,
@@ -275,6 +275,7 @@ function AtriumMall() {
                   marginTop: 10,
                 }}
               >
+                {console.log(items.booked, 'ddd')}
                 <div
                   style={
                     items.booked
@@ -299,7 +300,6 @@ function AtriumMall() {
                   }
                 >
                   <div
-                    // className={slotVal === selectedDate ? "book" : ''}
                     style={{
                       display: "flex",
                       justifyContent: "center",
