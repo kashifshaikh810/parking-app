@@ -73,11 +73,13 @@ const ViewUsers = () => {
               </thead>
               {newArr.map((data) => {
                 return (
+                  data.email !== 'admin@mail.com' ?
                   <tr>
                     <td style={{ textAlign: "center" }}>{data.email}</td>
                     <td style={{ textAlign: "center" }}>{data.firstName}</td>
                     <td style={{ textAlign: "center" }}>{data.lastName}</td>
                   </tr>
+                  : null
                 );
               })}
             </table>

@@ -193,7 +193,8 @@ function AtriumMall() {
             }}
             value={selectedDate}
             onChange={handleDate}
-          />
+            inputProps={{ min: moment().format('YYYY-MM-DD') }} 
+/>
 
           <label
             style={{
@@ -246,7 +247,7 @@ function AtriumMall() {
           </p>
         </div>
 
-        <div style={{ marginLeft: 15 }} onClick={handleVerify}>
+        <div style={{ marginLeft: 15, width: '16.4vh' }} onClick={handleVerify}>
           <Button variant="contained">Book Slot</Button>
         </div>
         <div style={{ marginLeft: 15, marginTop: 20 }}>

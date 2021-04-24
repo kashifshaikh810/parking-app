@@ -11,13 +11,18 @@ function FeedBack() {
   const [isLoading, setIsLoading] = useState(false);
   const [newArr, setNewArr] = useState([]);
   const [adminRoll, setAdminRoll] = useState("");
+  const [userData, setUserData] = useState("");
   const [newData, setNewData] = useState([]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    let firstName = userData.firstName
+    let lastName = userData.lastName
     let uid = firebase.auth()?.currentUser?.uid;
     firebase.database().ref(`/feedBacks/${uid}`).push({
       feedBack: feedBack,
+      firstName: firstName,
+      lastName: lastName,
     });
     setFeedBack("");
   };
@@ -25,6 +30,14 @@ function FeedBack() {
   const getData = () => {
     setIsLoading(true);
     const uid = firebase.auth()?.currentUser?.uid;
+    firebase
+      .database()
+      .ref(`/newUser/${uid}`)
+      .on("value", (snapshot) => {
+        const userData = snapshot.val() ? snapshot.val() : [];
+        setUserData(userData)
+    });
+
     firebase
       .database()
       .ref(`/feedBacks/${uid}`)
@@ -82,6 +95,9 @@ function FeedBack() {
   return (
     <div className="feedBack">
       <Card elevation={3} className="feedBackCard">
+        {
+          adminRoll !== 'admin@mail.com' ? (
+            <>
         <h2 className="feedBackHead">Your Feedback is Valuable for Us</h2>
         <form onSubmit={(event) => handleSubmit(event)}>
           <div style={{ marginLeft: 15 }}>
@@ -92,7 +108,6 @@ function FeedBack() {
               onChange={(event) => feedBackHandleChange(event)}
               required
               color="secondary"
-              disabled={Boolean(adminRoll === "admin@mail.com")}
             />
           </div>
           <br />
@@ -104,7 +119,6 @@ function FeedBack() {
             }}
           >
             <Button
-              disabled={Boolean(adminRoll === "admin@mail.com")}
               type="submit"
               variant="contained"
               color="secondary"
@@ -113,6 +127,9 @@ function FeedBack() {
             </Button>
           </div>
         </form>
+            </>
+          ) : null
+        }
         <div
           style={{
             marginLeft: 15,

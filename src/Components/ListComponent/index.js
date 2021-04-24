@@ -11,7 +11,9 @@ const List = ({ item, handleReply, index, id }) => {
   
   const handleSub = (event, index) => {
     event.preventDefault();
-    firebase.database().ref(`/feedBacks/${item.uid}/${item.id}`).set({ feedBack: item.feedBack, Reply: reply });
+    let firstName = item.firstName
+    let lastName = item.lastName   
+    firebase.database().ref(`/feedBacks/${item.uid}/${item.id}`).set({ firstName: firstName, lastName: lastName,  feedBack: item.feedBack, Reply: reply });
     setIsLoading(true);
     setReply("");
   };
@@ -44,7 +46,6 @@ const List = ({ item, handleReply, index, id }) => {
   const handleClick = () => {
     setIsLoading(false);
   };
-
   return (
     <div>
       <ul
@@ -54,7 +55,10 @@ const List = ({ item, handleReply, index, id }) => {
           width: "90%",
           marginLeft: 20,
         }}
-      >
+      > 
+       <div>
+          <p style={{textAlign: 'center'}}>Feed-Back By <b> {item.firstName} {item.lastName} </b></p>
+        </div>
         <li>
           <b>FeedBack : </b> {item.feedBack}
         </li>
@@ -62,6 +66,7 @@ const List = ({ item, handleReply, index, id }) => {
           <p style={{ margin: 0, padding: 0, fontWeight: "bold" }}>Reply :</p>
             <Para item={item} />
         </div>
+       
         <div
           style={{
             display: "flex",
@@ -72,6 +77,7 @@ const List = ({ item, handleReply, index, id }) => {
         >
           {adminRoll === "admin@mail.com" ? (
             isLoading ? (
+              !item.Reply ?
               <Button
                 onClick={handleClick}
                 variant="contained"
@@ -80,6 +86,7 @@ const List = ({ item, handleReply, index, id }) => {
               >
                 Reply
               </Button>
+              : null
             ) : (
               <>
                 <form onSubmit={(event) => handleSub(event, index)}>
