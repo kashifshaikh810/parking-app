@@ -22,6 +22,7 @@ function BookParking() {
     <div className="bookParking">
       <Card elevation={3} className="parkingCard">
         <h2 className="parkingHeading">Selected Parking Area</h2>
+        <div style={{overflow: 'scroll', height: "70%", marginBottom: 10}}>
         <div className="main">
           <div className="para">
             <p className="paraParent">Name :</p>
@@ -84,6 +85,79 @@ function BookParking() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="main">
+          <div className="para">
+            <p className="paraParent">Name :</p>
+            <p className="paraChild">Ocean Mall</p>
+          </div>
+          <div className="para">
+            <p className="paraParent">Address :</p>
+            <p className="paraChild">Clifton, Teen Talwar</p>
+            <div
+              style={{
+                position: "absolute",
+                top: "70%",
+                left: "85%",
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <div className="content" onClick={goToOceanMall}>
+                <Launch className="myIcon" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="main">
+          <div className="para">
+            <p className="paraParent">Name :</p>
+            <p className="paraChild">Ocean Mall</p>
+          </div>
+          <div className="para">
+            <p className="paraParent">Address :</p>
+            <p className="paraChild">Clifton, Teen Talwar</p>
+            <div
+              style={{
+                position: "absolute",
+                top: "70%",
+                left: "85%",
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <div className="content" onClick={goToOceanMall}>
+                <Launch className="myIcon" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="main">
+          <div className="para">
+            <p className="paraParent">Name :</p>
+            <p className="paraChild">Ocean Mall</p>
+          </div>
+          <div className="para">
+            <p className="paraParent">Address :</p>
+            <p className="paraChild">Clifton, Teen Talwar</p>
+            <div
+              style={{
+                position: "absolute",
+                top: "70%",
+                left: "85%",
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <div className="content" onClick={goToOceanMall}>
+                <Launch className="myIcon" />
+              </div>
+            </div>
+          </div>
+        </div>
         </div>
       </Card>
     </div>

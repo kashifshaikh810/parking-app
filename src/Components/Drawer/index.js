@@ -59,65 +59,81 @@ const DrawerHome = () => {
     history.push("/viewusers");
     setOpen(false);
   };
-
+ 
+  const handleAddLocation = () => {
+    history.push('/addlocation')
+    setOpen(false);
+  }
+ 
   const handleLogOut = async () => {
     await firebase.auth().signOut();
     history.push("/");
   };
-
+  
   return (
     <>
-      <DashboardHeader setOpen={setOpen} />
-      <Drawer open={open} onClose={() => setOpen(false)}>
-        <List disablePadding className={classes.drawer}>
-          {adminRoll !== "admin@mail.com" ? (
-            <ListItem button>
-              <ListItemText
-                primary="Book Parking"
-                onClick={parkingHandler}
-                className={classes.item}
-              />
-            </ListItem>
-          ) : (
-            []
-          )}
-
+    <DashboardHeader setOpen={setOpen} />
+    <Drawer open={open} onClose={() => setOpen(false)}>
+      <List disablePadding className={classes.drawer}>
+        {adminRoll !== "admin@mail.com" ? (
           <ListItem button>
             <ListItemText
-              onClick={bookHandler}
-              primary="View Booking"
+              primary="Book Parking"
+              onClick={parkingHandler}
               className={classes.item}
             />
           </ListItem>
+        ) : (
+          []
+        )}
 
+        <ListItem button>
+          <ListItemText
+            onClick={bookHandler}
+            primary="View Booking"
+            className={classes.item}
+          />
+        </ListItem>
+
+        <ListItem button>
+          <ListItemText
+            onClick={feedHandler}
+            primary="Feed Back"
+            className={classes.item}
+          />
+        </ListItem>
+
+        { adminRoll === "admin@mail.com" ?   
+        <ListItem button>
+          <ListItemText
+            onClick={handleAddLocation}
+            primary="Add Locations"
+            className={classes.item}
+          />
+        </ListItem> : []
+        }
+
+        {adminRoll === "admin@mail.com" ? (
           <ListItem button>
             <ListItemText
-              onClick={feedHandler}
-              primary="Feed Back"
+              onClick={viewUsersHandler}
+              primary="View Users"
               className={classes.item}
             />
           </ListItem>
+        ) : (
+          []
+        )}
 
-          {adminRoll === "admin@mail.com" ? (
-            <ListItem button>
-              <ListItemText
-                onClick={viewUsersHandler}
-                primary="View Users"
-                className={classes.item}
-              />
-            </ListItem>
-          ) : (
-            []
-          )}
-          <ListItem button>
-            <ListItemText
-              onClick={handleLogOut}
-              primary="Log Out"
-              className={classes.item}
-            />
-          </ListItem>
-        </List>
-      </Drawer>
+        <ListItem button>
+          <ListItemText
+            onClick={handleLogOut}
+            primary="Log Out"
+            className={classes.item}
+          />
+        </ListItem>       
+      </List>
+    </Drawer> 
     </>
   );
 };

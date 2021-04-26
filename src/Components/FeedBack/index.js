@@ -146,7 +146,7 @@ function FeedBack() {
           <p
             style={{
               fontSize: 20,
-              // marginTop: 10,
+              marginTop: 10,
               marginLeft: 10,
               fontWeight: "bold",
             }}
