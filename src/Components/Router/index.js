@@ -12,6 +12,7 @@ import DolmenMall from "../SlotsContainer/DolmenMallSlots/index";
 import OceanMall from "../SlotsContainer/OceanMallSlots/index";
 import ViewUsers from "../ViewUsers/index";
 import AddLocations from '../AddLocations/index';
+import ViewAddedLocations from '../ViewAddedLocations/index';
 import {CircularProgress} from '@material-ui/core'
 
 function Routing() {
@@ -43,6 +44,7 @@ function Routing() {
           <Route path="/signup" component={SignUp} />
           <Route path="/bookparking" component={Dashboard} />
           <Route path="/viewbooking" component={ViewBooking} />
+          <Route path="/viewaddlocations" component={ViewAddedLocations} />
           <Route path="/viewusers" component={ViewUsers} />
           <Route path="/feedback" component={FeedBack} />
           <Route path="/addlocation" component={AddLocations} />

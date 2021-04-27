@@ -27,14 +27,13 @@ const AddLocations = () => {
   const [errMyMsg, setErrMyMsg] = useState("");
   const [success, setSuccess] = useState("");
   const [slots, setSlots] = useState("");
-  const [slotItems, setslotItems] = useState([{title: 'Car Slot 1'}, {title: 'Car Slot 2'}, {title: 'Car Slot 3'}, {title: 'Car Slot 4'}, {title: 'Car Slot 5'}, {title: 'Car Slot 6'}, {title: 'Car Slot 7'}, {title: 'Car Slot 8'}, {title: 'Car Slot 9'}, {title: 'Car Slot 10'}, {title: 'Car Slot 12'}, {title: 'Car Slot 13'}, {title: 'Car Slot 14'}, {title: 'Car Slot 15'}]);
+  const [slotItems, setslotItems] = useState([{title: 'num of Slots 1'}, {title: 'num of Slots 2'}, {title: 'num of Slots 3'}, {title: 'num of Slots 4'}, {title: 'num of Slots 5'}, {title: 'num of Slots 6'}, {title: 'num of Slots 7'}, {title: 'num of Slots 8'}, {title: 'num of Slots 9'}, {title: 'num of Slots 10'}, {title: 'num of Slots 12'}, {title: 'num of Slots 13'}, {title: 'num of Slots 14'}, {title: 'num of Slots 15'}]);
   const classes = useStyles();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (location && address && slots) {
-        let uid = firebase.auth()?.currentUser?.uid;
-        firebase.database().ref('/locations/').push({key: uid, location: location, address: address, slots: slots})
+        firebase.database().ref('/locations/').push({location: location, address: address, slots: slots})
         setSuccess("Data Successfully Added")
         setLocation('')
         setAddress('')

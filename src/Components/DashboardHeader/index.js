@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const DashboardHeader = ({ setOpen }) => {
   const classes = useStyles();
   let history = useHistory();
+  
   const handleLogOut = async () => {
     await firebase.auth().signOut();
     history.push("/");

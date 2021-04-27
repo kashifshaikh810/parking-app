@@ -18,10 +18,15 @@ function SignIn() {
     event.preventDefault();
     if (email && password) {
       try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-        setEmail("");
-        setPassword("");
-        history.push("/bookparking");
+        await firebase.auth().signInWithEmailAndPassword(email, password).then(({user}) => {
+          if(user.email === 'admin@mail.com'){
+            setEmail("");
+            setPassword("");
+            history.push("/viewbooking");
+          }else{
+            history.push("/bookparking");
+          }
+        })
       } catch (err) {
         console.log(err?.message);
         setErrMsg(err?.message);

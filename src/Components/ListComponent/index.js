@@ -56,14 +56,17 @@ const List = ({ item, handleReply, index, id }) => {
           marginLeft: 20,
         }}
       > 
+      { adminRoll === 'admin@mail.com' ?
        <div>
-          <p style={{textAlign: 'center'}}>Feed-Back By <b> {item.firstName} {item.lastName} </b></p>
+          <p style={{textAlign: 'right'}}>Feed-Back By <b> {item.firstName} {item.lastName} </b></p>
         </div>
+        : []
+      }
         <li>
           <b>FeedBack : </b> {item.feedBack}
         </li>
         <div style={{ display: "flex" }}>
-          <p style={{ margin: 0, padding: 0, fontWeight: "bold" }}>Reply :</p>
+          <p style={{ margin: 0, padding: 0, fontWeight: "bold" }}>Admin :</p>
             <Para item={item} />
         </div>
        

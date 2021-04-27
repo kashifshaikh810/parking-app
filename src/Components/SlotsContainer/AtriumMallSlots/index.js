@@ -147,6 +147,7 @@ function AtriumMall() {
       );
     }
   };
+
   return (
     <div className="atriumMall">
       <Card elevation={3} className="atriumMallCard">

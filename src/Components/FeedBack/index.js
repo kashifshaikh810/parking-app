@@ -183,6 +183,7 @@ function FeedBack() {
                       item={newArr[item]}
                       index={index}
                       handleReply={handleReply}
+                      adminRoll={adminRoll}
                     />
                   );
                 })

@@ -59,6 +59,10 @@ const DrawerHome = () => {
     history.push("/viewusers");
     setOpen(false);
   };
+
+  const viewLocationsHandler = () => {
+    history.push("/viewaddlocations");
+  };
  
   const handleAddLocation = () => {
     history.push('/addlocation')
@@ -118,6 +122,18 @@ const DrawerHome = () => {
             <ListItemText
               onClick={viewUsersHandler}
               primary="View Users"
+              className={classes.item}
+            />
+          </ListItem>
+        ) : (
+          []
+        )}
+
+      {adminRoll === "admin@mail.com" ? (
+          <ListItem button>
+            <ListItemText
+              onClick={viewLocationsHandler}
+              primary="View Locations"
               className={classes.item}
             />
           </ListItem>
