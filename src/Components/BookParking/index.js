@@ -11,7 +11,7 @@ function BookParking() {
   const [getData, setGetData] = useState([])
 
   const goToAtriumMall = (item, index) => {
-    history.push(`/atriummall/${item.location}/${index}`);
+    history.push(`/atriummall/${item.location}/${item.slots}/${item.booked}`);
   };
 
   // const goToDolmenMall = () => {
@@ -34,7 +34,7 @@ function BookParking() {
   return (
     <div className="bookParking">
       <Card elevation={3} className="parkingCard">
-        <h2 className="parkingHeading">Select the your favourite Parking Area</h2>
+        <h2 className="parkingHeading">Select the favourite Parking Area</h2>
         <div style={{overflow: 'scroll', height: "70%", marginBottom: 10}}>
           {Object.keys(getData).length > 0 ?
              isLoading ? (
@@ -44,29 +44,44 @@ function BookParking() {
             ) : (
               getData?.map((item, index) => {
                 return(
-                  <div className="main">
+                  <Card elevation={12} style={{width: '95%', margin: 20, marginTop: 10}}>
+                  <div className="main">  
                   <div className="para">
                     <p className="paraParent">Name :</p>
                     <p className="paraChild">{item.location}</p>
                   </div>
+                      <div 
+       style={{position: 'relative', left: '90%', top: 0, bottom: 0, right: 0,
+        width: 40, height: 40, backgroundColor: '#c2185b', display: 'flex', justifyContent: 'center', alignItems: 'center',
+        borderRadius: 20, cursor: 'pointer'
+      }}
+       onClick={() => goToAtriumMall(item, index)}>
+                        <Launch style={{color: '#f1f1f1'}}/>
+                      </div>
                   <div className="para">
                     <p className="paraParent"> Address :</p>
                     <p className="paraChild">{item.address}</p>
-                    <div className="iconContainer">
-                      <div className="content" onClick={() => goToAtriumMall(item, index)}>
-                        <Launch className="myIcon" />
-                      </div>
-                    </div>
                   </div>
                 </div>
+                </Card>
               );
               })
             )
           : <h3 style={{textAlign: 'center', fontWeight: 'bold'}}>Admin No Locations Added</h3>
           }
-       
 
-        {/* <div className="main">
+      
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+export default BookParking;
+
+
+// spire 
+  {/* <div className="main">
           <div className="para">
             <p className="paraParent">Name :</p>
             <p className="paraChild">Dolmen Mall</p>
@@ -113,10 +128,3 @@ function BookParking() {
             </div>
           </div>
         </div> */}
-        </div>
-      </Card>
-    </div>
-  );
-}
-
-export default BookParking;

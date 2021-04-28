@@ -32,69 +32,66 @@ const useStyles = makeStyles((theme) => ({
 var format = "hh:mm:ss";
 
 function AtriumMall() {
-  const { location } = useParams();
+  const { location, slots, booked } = useParams();
   const [seletedHours, setSeletedHours] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-  const [arr, setArr] = useState([
-    { title: "Car Slot 1", booked: false },
-    { title: "Car Slot 2", booked: false },
-    { title: "Car Slot 3", booked: false },
-    { title: "Car Slot 4", booked: false },
-    { title: "Car Slot 5", booked: false },
-    { title: "Car Slot 6", booked: false },
-    { title: "Car Slot 7", booked: false },
-  ]);
+  const [arr, setArr] = useState([]);
   const [selectedTime, setSeletedTime] = useState("");
   const [hideSlot, setHideSlot] = useState(false);
   const [err, setErr] = useState("");
   const classes = useStyles();
   const [bookSuccess, setBookSuccess] = useState("");
 
+  
   useEffect(() => {
-    firebase
-      .database()
-      .ref(`/bookings/`)
-      .on("value", (snapshot) => {
-        console.log(snapshot.val());
-        let snap = snapshot.val() ? Object.values(snapshot.val()) : [];
-        let data = Object.values(snap);
-        let shot = [];
+    let data = [...arr]
+    for(var i = 1; i <= slots; i++){
+      data.push({ title: i, booked: booked})
+      setArr(data)
+    }
+    // firebase
+    //   .database()
+    //   .ref(`/bookings/`)
+    //   .on("value", (snapshot) => {
+    //     let snap = snapshot.val() ? Object.values(snapshot.val()) : [];
+    //     let data = Object.values(snap);
+    //     let shot = [];
 
-        data.forEach((item, i) => {
-          shot = [...Object.values(item), ...shot];
-        });
+    //     data.forEach((item, i) => {
+    //       shot = [...Object.values(item), ...shot];
+    //     });
 
-        let newData = {};
+    //     let newData = {};
 
-        arr.forEach((prevSlots) => {
-          var bookings = shot.filter(
-            (booked) => booked.Slots === prevSlots.title
-          );
-          var found = false;
+    //     arr.forEach((prevSlots) => {
+    //       var bookings = shot.filter(
+    //         (booked) => booked.Slots === prevSlots.title
+    //       );
+    //       var found = false;
 
-          for (let i = 0; i < bookings.length; i++) {
-            let booked = bookings[i];
-            let time = moment(`${selectedTime}:00`, format);
-            let endTime = moment(`${seletedHours}:00`, format);
-            let beforeTime = moment(`${booked.StartTime}:00`, format);
-            let afterTime = moment(`${booked.EndTime}:00`, format);
-            if (
-              booked.selectDate === selectedDate &&
-              (time.isBetween(beforeTime, afterTime) ||
-                endTime.isBetween(beforeTime, afterTime))
-            ) {
-              found = true;
-              break;
-            } else {
-              found = false;
-            }
-          }
-          newData[prevSlots.title] = { ...prevSlots, booked: found };
-        });
+    //       for (let i = 0; i < bookings.length; i++) {
+    //         let booked = bookings[i];
+    //         let time = moment(`${selectedTime}:00`, format);
+    //         let endTime = moment(`${seletedHours}:00`, format);
+    //         let beforeTime = moment(`${booked.StartTime}:00`, format);
+    //         let afterTime = moment(`${booked.EndTime}:00`, format);
+    //         if (
+    //           booked.selectDate === selectedDate &&
+    //           (time.isBetween(beforeTime, afterTime) ||
+    //             endTime.isBetween(beforeTime, afterTime))
+    //         ) {
+    //           found = true;
+    //           break;
+    //         } else {
+    //           found = false;
+    //         }
+    //       }
+    //       newData[prevSlots.title] = { ...prevSlots, booked: found };
+    //     });
 
-        setArr(Object.values(newData));
-      });
-  }, [location, selectedDate, selectedTime, seletedHours]);
+        // setArr(Object.values(newData));
+      // });
+  }, [location, booked, slots]);
 
   const handleHours = (event) => {
     setSeletedHours(event.target.value);
@@ -269,7 +266,7 @@ function AtriumMall() {
             return (
               <div
                 key={index}
-                onClick={() => !items.booked && handleSubmit(items)}
+                onClick={() => handleSubmit(items)}
                 style={{
                   float: "left",
                   flexWrap: "wrap",
@@ -277,20 +274,19 @@ function AtriumMall() {
                   marginTop: 10,
                 }}
               >
-                {console.log(items.booked, 'ddd')}
                 <div
                   style={
-                    items.booked
-                      ? {
-                          height: "16vh",
-                          width: "20vh",
-                          borderRadius: "4vh",
-                          backgroundColor: "red",
-                          cursor: "not-allowed",
-                          display: "flex",
-                          justifyContent: "center",
-                        }
-                      : {
+                    // items.booked
+                    //   ? {
+                    //       height: "16vh",
+                    //       width: "20vh",
+                    //       borderRadius: "4vh",
+                    //       backgroundColor: "red",
+                    //       cursor: "not-allowed",
+                    //       display: "flex",
+                    //       justifyContent: "center",
+                    //     }
+                       {
                           height: "16vh",
                           width: "20vh",
                           borderRadius: "4vh",

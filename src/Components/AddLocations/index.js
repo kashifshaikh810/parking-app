@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './index.css'
+import {useHistory} from 'react-router-dom';
 import { Card, Input, Button, FormControl, Select, MenuItem } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import firebase from "firebase";
@@ -22,22 +23,23 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const AddLocations = () => {
+  let history = useHistory()
   const [location, setLocation] = useState("");
   const [address, setAddress] = useState("");
   const [errMyMsg, setErrMyMsg] = useState("");
   const [success, setSuccess] = useState("");
   const [slots, setSlots] = useState("");
-  const [slotItems, setslotItems] = useState([{title: 'num of Slots 1'}, {title: 'num of Slots 2'}, {title: 'num of Slots 3'}, {title: 'num of Slots 4'}, {title: 'num of Slots 5'}, {title: 'num of Slots 6'}, {title: 'num of Slots 7'}, {title: 'num of Slots 8'}, {title: 'num of Slots 9'}, {title: 'num of Slots 10'}, {title: 'num of Slots 12'}, {title: 'num of Slots 13'}, {title: 'num of Slots 14'}, {title: 'num of Slots 15'}]);
   const classes = useStyles();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (location && address && slots) {
-        firebase.database().ref('/locations/').push({location: location, address: address, slots: slots})
+        firebase.database().ref('/locations/').push({location: location, address: address, slots: slots, booked: false})
         setSuccess("Data Successfully Added")
         setLocation('')
         setAddress('')
         setSlots('')
+        history.push('/viewaddlocations')
     } else {
       setErrMyMsg("All Fields Are Required");
     }
@@ -111,13 +113,16 @@ const AddLocations = () => {
                 <MenuItem>
                   <em>Select Slot</em>
                 </MenuItem>
-                {
-                    slotItems.map((item) => {
-                        return(
-                            <MenuItem value={item.title}><span style={{ cursor: "pointer" }}>{item.title}</span> </MenuItem>
-                        )
-                    })
-                }
+                <MenuItem value={1}><span style={{ cursor: "pointer" }}></span>num of Slots 1</MenuItem>
+                <MenuItem value={2}><span style={{ cursor: "pointer" }}></span>num of Slots 2</MenuItem>
+                <MenuItem value={3}><span style={{ cursor: "pointer" }}></span>num of Slots 3</MenuItem>
+                <MenuItem value={4}><span style={{ cursor: "pointer" }}></span>num of Slots 4</MenuItem>
+                <MenuItem value={5}><span style={{ cursor: "pointer" }}></span>num of Slots 5</MenuItem>
+                <MenuItem value={6}><span style={{ cursor: "pointer" }}></span>num of Slots 6</MenuItem>
+                <MenuItem value={7}><span style={{ cursor: "pointer" }}></span>num of Slots 7</MenuItem>
+                <MenuItem value={8}><span style={{ cursor: "pointer" }}></span>num of Slots 8</MenuItem>
+                <MenuItem value={9}><span style={{ cursor: "pointer" }}></span>num of Slots 9</MenuItem>
+                <MenuItem value={10}><span style={{ cursor: "pointer" }}></span>num of Slots 10</MenuItem>
               </Select>
             </FormControl>
           </div>

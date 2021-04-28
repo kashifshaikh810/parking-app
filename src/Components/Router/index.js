@@ -48,7 +48,7 @@ function Routing() {
           <Route path="/viewusers" component={ViewUsers} />
           <Route path="/feedback" component={FeedBack} />
           <Route path="/addlocation" component={AddLocations} />
-          <Route path="/atriummall/:location" component={AtriumMall} />
+          <Route path="/atriummall/:location/:slots/:booked" component={AtriumMall} />
           <Route path="/dolmenmall/:location" component={DolmenMall} />
           <Route path="/oceanmall/:location" component={OceanMall} />
         </Switch>
