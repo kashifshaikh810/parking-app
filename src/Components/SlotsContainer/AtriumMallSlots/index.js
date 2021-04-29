@@ -49,49 +49,51 @@ function AtriumMall() {
       data.push({ title: i, booked: booked})
       setArr(data)
     }
-    // firebase
-    //   .database()
-    //   .ref(`/bookings/`)
-    //   .on("value", (snapshot) => {
-    //     let snap = snapshot.val() ? Object.values(snapshot.val()) : [];
-    //     let data = Object.values(snap);
-    //     let shot = [];
+    let uid = firebase.auth()?.currentUser?.uid;
+    firebase
+      .database()
+      .ref(`/bookings/${uid}/${location}`)
+      .on("value", (snapshot) => {
+        let snap = snapshot.val() ? Object.values(snapshot.val()) : [];
+        let data = Object.values(snap);
+        let shot = [];
 
-    //     data.forEach((item, i) => {
-    //       shot = [...Object.values(item), ...shot];
-    //     });
+        // data.forEach((item, i) => {
+        //   shot = [...Object.values(item), ...shot];
+        //   console.log(shot)
+        // });
 
-    //     let newData = {};
+        let newData = {};
 
-    //     arr.forEach((prevSlots) => {
-    //       var bookings = shot.filter(
-    //         (booked) => booked.Slots === prevSlots.title
-    //       );
-    //       var found = false;
+        arr.forEach((prevSlots) => {
+          var bookings = data.filter(
+            (booked) => booked.Slots === prevSlots.title
+          );
+          var found = false;
 
-    //       for (let i = 0; i < bookings.length; i++) {
-    //         let booked = bookings[i];
-    //         let time = moment(`${selectedTime}:00`, format);
-    //         let endTime = moment(`${seletedHours}:00`, format);
-    //         let beforeTime = moment(`${booked.StartTime}:00`, format);
-    //         let afterTime = moment(`${booked.EndTime}:00`, format);
-    //         if (
-    //           booked.selectDate === selectedDate &&
-    //           (time.isBetween(beforeTime, afterTime) ||
-    //             endTime.isBetween(beforeTime, afterTime))
-    //         ) {
-    //           found = true;
-    //           break;
-    //         } else {
-    //           found = false;
-    //         }
-    //       }
-    //       newData[prevSlots.title] = { ...prevSlots, booked: found };
-    //     });
+          for (let i = 0; i < bookings.length; i++) {
+            let booked = bookings[i];
+            let time = moment(`${selectedTime}:00`, format);
+            let endTime = moment(`${seletedHours}:00`, format);
+            let beforeTime = moment(`${booked.StartTime}:00`, format);
+            let afterTime = moment(`${booked.EndTime}:00`, format);
+            if (
+              booked.selectDate === selectedDate &&
+              (time.isBetween(beforeTime, afterTime) ||
+                endTime.isBetween(beforeTime, afterTime))
+            ) {
+              found = true;
+              break;
+            } else {
+              found = false;
+            }
+          }
+          newData[prevSlots.title] = { ...prevSlots, booked: found };
+        });
 
-        // setArr(Object.values(newData));
-      // });
-  }, [location, booked, slots]);
+        setArr(Object.values(newData));
+      });
+  }, [location, booked, slots, selectedDate, selectedTime, seletedHours]);
 
   const handleHours = (event) => {
     setSeletedHours(event.target.value);
@@ -126,7 +128,7 @@ function AtriumMall() {
     if (seletedHours && selectedDate && selectedTime) {
       let uid = firebase.auth()?.currentUser?.uid;
       let slots = items.title;
-      firebase.database().ref(`/bookings/${uid}`).push({
+      firebase.database().ref(`/bookings/${uid}/${location}/`).push({
         selectDate: selectedDate,
         StartTime: selectedTime,
         Location: location,
@@ -263,6 +265,7 @@ function AtriumMall() {
         </div>
         {hideSlot ? (
           arr.map((items, index) => {
+            console.log(items);
             return (
               <div
                 key={index}

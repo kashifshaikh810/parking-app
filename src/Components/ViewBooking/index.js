@@ -18,8 +18,30 @@ const ViewBooking = () => {
       .ref(`/bookings/${uid}`)
       .on("value", (snapshot) => {
         let data = snapshot.val() ? Object.values(snapshot.val()) : [];
-        setUserData(data);
-        setIsLoading(false);
+        const newData = data
+        newData?.forEach((bookings, i) => {
+          // setUserData(bookings)
+          setIsLoading(false)
+          })
+      });
+  };
+
+  const get = () => {
+    let uid = firebase.auth()?.currentUser?.uid;
+    firebase
+      .database()
+      .ref(`/bookings/${uid}`)
+      .on("value", (snapshot) => {
+        let data = snapshot.val() ? Object.values(snapshot.val()) : [];
+        let user = []
+        const newData = data
+        newData?.forEach((bookings, i) => {
+          let ddd = Object.values(bookings)
+          ddd.forEach((item) => {
+            user.push(item)
+          })
+          setUserData(user)
+          })
       });
   };
 
@@ -35,7 +57,10 @@ const ViewBooking = () => {
           const aa = Object.values(test);
           const newData = Object.values(aa);
           newData?.forEach((data) => {
-            allData.push(data);
+            const newData = Object.values(data)
+            newData.forEach((bookings) => {
+              allData.push(bookings);
+            })
           });
         });
         setAdminData(allData);
@@ -55,8 +80,9 @@ const ViewBooking = () => {
   };
 
   useEffect(() => {
-    getUserData();
+    get()
     getAdminData();
+    getUserData();
     getAdminRoll();
   }, [isLoading]);
 
@@ -88,7 +114,7 @@ const ViewBooking = () => {
               </div>
             ) : (
               <>
-                {userData?.length ? (
+                {Object.keys(userData)?.length > 0 ? (
                   <div
                     style={{
                       display: "flex",
@@ -107,28 +133,28 @@ const ViewBooking = () => {
                           <th style={{ textAlign: "center" }}>Date</th>
                         </tr>
                       </thead>
-                      {userData.map((newData, i) => {
-                        return (
+                      {userData && Object.keys(userData)?.map((newData, i) => {
+                        return ( 
                           <tr key={i}>
                             <td style={{ textAlign: "center" }}>{i}</td>
                             <td tyle={{ textAlign: "center" }}>
-                              {newData.Location}
+                              {userData[newData].Location}
                             </td>
                             <td tyle={{ textAlign: "center" }}>
-                              {newData.Slots}
+                              {userData[newData].Slots}
                             </td>
                             <td style={{ textAlign: "center" }}>
-                              {newData.StartTime}
+                              {userData[newData].StartTime}
                             </td>
                             <td style={{ textAlign: "center" }}>
-                              {newData.EndTime}
+                              {userData[newData].EndTime}
                             </td>
                             <td tyle={{ textAlign: "center" }}>
-                              {newData.selectDate}
+                              {userData[newData].selectDate}
                             </td>
                           </tr>
-                        );
-                      })}
+                          );
+                      })} 
                     </table>
                   </div>
                 ) : (
