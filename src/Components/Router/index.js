@@ -7,9 +7,7 @@ import Drawer from "../Drawer/index";
 import Dashboard from "../BookParking/index";
 import ViewBooking from "../ViewBooking/index";
 import FeedBack from "../FeedBack/index";
-import AtriumMall from "../SlotsContainer/AtriumMallSlots/index";
-import DolmenMall from "../SlotsContainer/DolmenMallSlots/index";
-import OceanMall from "../SlotsContainer/OceanMallSlots/index";
+import AtriumMall from "../AtriumMallSlots/index";
 import ViewUsers from "../ViewUsers/index";
 import AddLocations from '../AddLocations/index';
 import ViewAddedLocations from '../ViewAddedLocations/index';
@@ -26,7 +24,7 @@ function Routing() {
       setUid(uid);
       setIsLoading(false)
     });
-  }, [uid]);
+  }, []);
 
   return (
     <>
@@ -49,8 +47,6 @@ function Routing() {
           <Route path="/feedback" component={FeedBack} />
           <Route path="/addlocation" component={AddLocations} />
           <Route path="/atriummall/:location/:slots/:booked" component={AtriumMall} />
-          <Route path="/dolmenmall/:location" component={DolmenMall} />
-          <Route path="/oceanmall/:location" component={OceanMall} />
         </Switch>
       </Router>
     </div>

@@ -11,22 +11,7 @@ const ViewBooking = () => {
   const [adminRoll, setAdminRoll] = useState("");
 
   const getUserData = () => {
-    setIsLoading(true);
-    let uid = firebase.auth()?.currentUser?.uid;
-    firebase
-      .database()
-      .ref(`/bookings/${uid}`)
-      .on("value", (snapshot) => {
-        let data = snapshot.val() ? Object.values(snapshot.val()) : [];
-        const newData = data
-        newData?.forEach((bookings, i) => {
-          // setUserData(bookings)
-          setIsLoading(false)
-          })
-      });
-  };
-
-  const get = () => {
+    setIsLoading(true)
     let uid = firebase.auth()?.currentUser?.uid;
     firebase
       .database()
@@ -36,11 +21,17 @@ const ViewBooking = () => {
         let user = []
         const newData = data
         newData?.forEach((bookings, i) => {
-          let ddd = Object.values(bookings)
-          ddd.forEach((item) => {
+          let add = Object.values(bookings)
+          add.forEach((item) => {
             user.push(item)
           })
+          user = user.sort(function compare(a, b) {
+            let dateA = new Date(a.selectDate);
+            let dateB = new Date(b.selectDate);
+            return dateA - dateB;
+          });
           setUserData(user)
+          setIsLoading(false)
           })
       });
   };
@@ -62,6 +53,11 @@ const ViewBooking = () => {
               allData.push(bookings);
             })
           });
+          allData = allData.sort(function compare(a, b) {
+            let dateA = new Date(a.selectDate);
+            let dateB = new Date(b.selectDate);
+            return dateA - dateB;
+          });
         });
         setAdminData(allData);
         setIsLoader(false);
@@ -80,7 +76,6 @@ const ViewBooking = () => {
   };
 
   useEffect(() => {
-    get()
     getAdminData();
     getUserData();
     getAdminRoll();

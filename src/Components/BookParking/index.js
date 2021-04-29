@@ -7,7 +7,7 @@ import firebase from "firebase";
 
 function BookParking() {
   let history = useHistory();
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [getData, setGetData] = useState([])
 
   const goToAtriumMall = (item, index) => {
@@ -15,22 +15,16 @@ function BookParking() {
     history.push(`/atriummall/${item.location}/${item.slots}/${item.booked}/${localStorage.setItem('slots', slots)}`);
   };
 
-  // const goToDolmenMall = () => {
-  //   history.push("/dolmenmall/DolmenMall");
-  // };
-
-  // const goToOceanMall = () => {
-  //   history.push("/oceanmall/OceanMall");
-  // };
-
   useEffect(() => {
     setIsLoading(true)
     firebase.database().ref('/locations/').on('value', (snapshot) => {
       let data = snapshot.val() ? Object.values(snapshot.val()) : [];
       setGetData(data)
-      setIsLoading(false)
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 1500);
     })
-  },[isLoading])
+  },[])
 
   return (
     <div className="bookParking">
@@ -68,7 +62,11 @@ function BookParking() {
               );
               })
             )
-          : <h3 style={{textAlign: 'center', fontWeight: 'bold'}}>Admin No Locations Added</h3>
+          : isLoading ? <div style={{display: 'flex', justifyContent: 'center', alignItems: "center", height: '48vh'}}>
+          <CircularProgress color="secondary" />
+        </div>
+          :
+          <h3 style={{textAlign: 'center', fontWeight: 'bold'}}>Admin No Locations Added</h3>
           }
 
       
