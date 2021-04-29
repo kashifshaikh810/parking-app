@@ -44,24 +44,22 @@ function AtriumMall() {
 
   
   useEffect(() => {
+    let noOfSlots = Number(localStorage.getItem('slots'));
     let data = [...arr]
-    for(var i = 1; i <= slots; i++){
+    for(var i = 1; i <= noOfSlots; i++){
       data.push({ title: i, booked: booked})
       setArr(data)
     }
+  }, []);
+
+  useEffect(() => {
     let uid = firebase.auth()?.currentUser?.uid;
     firebase
       .database()
       .ref(`/bookings/${uid}/${location}`)
       .on("value", (snapshot) => {
         let snap = snapshot.val() ? Object.values(snapshot.val()) : [];
-        let data = Object.values(snap);
-        let shot = [];
-
-        // data.forEach((item, i) => {
-        //   shot = [...Object.values(item), ...shot];
-        //   console.log(shot)
-        // });
+        let data = [...snap];
 
         let newData = {};
 
@@ -81,6 +79,7 @@ function AtriumMall() {
               booked.selectDate === selectedDate &&
               (time.isBetween(beforeTime, afterTime) ||
                 endTime.isBetween(beforeTime, afterTime))
+                && location === booked.Location
             ) {
               found = true;
               break;
@@ -91,7 +90,7 @@ function AtriumMall() {
           newData[prevSlots.title] = { ...prevSlots, booked: found };
         });
 
-        setArr(Object.values(newData));
+        Object.keys(newData).length && setArr(Object.values(newData));
       });
   }, [location, booked, slots, selectedDate, selectedTime, seletedHours]);
 
@@ -265,11 +264,10 @@ function AtriumMall() {
         </div>
         {hideSlot ? (
           arr.map((items, index) => {
-            console.log(items);
             return (
               <div
                 key={index}
-                onClick={() => handleSubmit(items)}
+                onClick={() => !items.booked && handleSubmit(items)}
                 style={{
                   float: "left",
                   flexWrap: "wrap",
@@ -279,16 +277,17 @@ function AtriumMall() {
               >
                 <div
                   style={
-                    // items.booked
-                    //   ? {
-                    //       height: "16vh",
-                    //       width: "20vh",
-                    //       borderRadius: "4vh",
-                    //       backgroundColor: "red",
-                    //       cursor: "not-allowed",
-                    //       display: "flex",
-                    //       justifyContent: "center",
-                    //     }
+                    items.booked
+                      ? {
+                          height: "16vh",
+                          width: "20vh",
+                          borderRadius: "4vh",
+                          backgroundColor: "red",
+                          cursor: "not-allowed",
+                          display: "flex",
+                          justifyContent: "center",
+                        }
+                        :
                        {
                           height: "16vh",
                           width: "20vh",

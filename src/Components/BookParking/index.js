@@ -11,7 +11,8 @@ function BookParking() {
   const [getData, setGetData] = useState([])
 
   const goToAtriumMall = (item, index) => {
-    history.push(`/atriummall/${item.location}/${item.slots}/${item.booked}`);
+    let slots = item.slots
+    history.push(`/atriummall/${item.location}/${item.slots}/${item.booked}/${localStorage.setItem('slots', slots)}`);
   };
 
   // const goToDolmenMall = () => {
