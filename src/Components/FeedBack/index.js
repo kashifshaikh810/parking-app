@@ -9,6 +9,7 @@ import firebase from "firebase/app";
 function FeedBack() {
   const [feedBack, setFeedBack] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoader, setIsLoader] = useState(false);
   const [newArr, setNewArr] = useState([]);
   const [adminRoll, setAdminRoll] = useState("");
   const [userData, setUserData] = useState("");
@@ -60,6 +61,7 @@ function FeedBack() {
   };
 
   const getAdminData = () => {
+    setIsLoader(true)
     firebase
       .database()
       .ref(`/feedBacks/`)
@@ -75,6 +77,7 @@ function FeedBack() {
             allData.push({...data, id: pushKey[i], uid: pushUid[j]});
           });
           setNewData(allData);
+          setIsLoader(false)
         });
       });
   };
@@ -127,7 +130,7 @@ function FeedBack() {
             </Button>
           </div>
         </form>
-            </>
+        </>
           ) : null
         }
         <div
@@ -164,7 +167,7 @@ function FeedBack() {
                 height: "40%",
               }}
             >
-              <CircularProgress color="secondary" />
+              <CircularProgress color="secondary" /> 
             </div>
           ) : (
             <div
@@ -196,7 +199,7 @@ function FeedBack() {
         ) : null}
 
         {adminRoll === "admin@mail.com" ? (
-          isLoading ? (
+          isLoader ? (
             <div
               style={{
                 display: "flex",
@@ -205,7 +208,7 @@ function FeedBack() {
                 height: "40%",
               }}
             >
-              <CircularProgress color="secondary" />
+              <CircularProgress color="primary" />
             </div>
           ) : (
             <div
@@ -237,7 +240,8 @@ function FeedBack() {
           )
         ) : (
           []
-        )}
+        )
+        }
       </Card>
     </div>
   );

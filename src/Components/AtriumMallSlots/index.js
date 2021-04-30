@@ -210,6 +210,7 @@ function AtriumMall() {
             id="time"
             type="time"
             className={classes.textField}
+            inputProps={{ min: moment().format('H:mm') }} 
             InputLabelProps={{
               shrink: true,
             }}

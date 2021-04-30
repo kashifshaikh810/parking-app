@@ -77,7 +77,9 @@ const ViewAddLocations =  () => {
         </TableBody>
       </Table>
     </TableContainer>
-              ) : <h3 style={{textAlign: 'center', fontWeight: 'bold'}}>No Locations Added On user Dashboard</h3>
+              ) : isLoading ? <div style={{display: 'flex', justifyContent: 'center', alignItems: "center", height: '48vh'}}>
+              <CircularProgress color="secondary" />
+            </div> : <h3 style={{textAlign: 'center', fontWeight: 'bold'}}>No Locations Added On user Dashboard</h3>
             }
         </Card>
         </div>
