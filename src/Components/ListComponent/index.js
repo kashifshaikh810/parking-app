@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import firebase from "firebase/app";
 import Para from "../ParaGraph/index";
 
-const List = ({ item, handleReply, index, id }) => {
+const List = ({ item, handleReply, index, id, toTitleCase }) => {
   const [reply, setReply] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [adminRoll, setAdminRoll] = useState("");

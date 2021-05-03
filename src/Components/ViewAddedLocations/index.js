@@ -71,7 +71,7 @@ const ViewAddLocations =  () => {
               </StyledTableCell>
               <StyledTableCell>{item.address}</StyledTableCell>
               <StyledTableCell>{item.slots}</StyledTableCell>
-              <Button onClick={() => deleted(index)}>Delete</Button>
+              <Button style={{backgroundColor: 'red'}} onClick={() => deleted(index)}>Delete</Button>
             </StyledTableRow>
           ))}
         </TableBody>

@@ -28,17 +28,37 @@ const ViewBooking = () => {
           add.forEach((item) => {
             user.push(item)
           })
-          user = user.sort(function compare(a, b) {
-            let dateA = new Date(b.selectDate)
-            let dateB = new Date(a.selectDate)
-            return dateA - dateB;
-          });
+          // user = user.sort(function compare(a, b) {
+          //   let dateA = new Date(b.selectDate)
+          //   let dateB = new Date(a.selectDate)
+          //   return dateA - dateB;
+          // });
 
-          user = user.sort(function compare(a, b) {
-            let dateA = moment(b.selectDate + " " + b.StartTime).format('hmm')
-            let dateB = moment(a.selectDate + " " + a.StartTime).format('hmm')
-            return dateB - dateA;
-          }) 
+          // user = user.sort(function compare(a, b) {
+          //   let get = new Date(b.StartTime).getTime()
+          //   let getTwo = new Date(a.StartTime).getTime()
+          //   let dateA = new Date(a.selectDate + " " + getTwo)
+          //   let dateB = new Date(b.selectDate + " " + get)
+          //   return dateB - dateA;
+          // }) 
+
+          let array = [...user];
+        user = user.sort((a, b) => {
+            return new Date(b.selectDate).getTime() - new Date(a.selectDate).getTime()
+        });
+        console.log("time", array)
+        user = user.sort((a, b) => {
+            if (new Date(a.selectDate).getTime() === new Date(b.selectDate).getTime()) {
+                if (Number(b.StartTime.split(":")[0]) < Number(a.StartTime.split(":")[0])) {
+                    return 1
+                } else {
+                    return -1
+                }
+            }
+            else {
+                return 0
+            }
+        });
 
           setUserData(user)
           setIsLoading(false)
@@ -72,11 +92,38 @@ const ViewBooking = () => {
             let dateB = new Date(a.selectDate);
             return dateA - dateB;
           });
+
+          let array = [...allData];
+          allData = allData.sort((a, b) => {
+              return new Date(b.selectDate).getTime() - new Date(a.selectDate).getTime()
+          });
+          console.log("time", array)
+          allData = allData.sort((a, b) => {
+              if (new Date(a.selectDate).getTime() === new Date(b.selectDate).getTime()) {
+                  if (Number(b.StartTime.split(":")[0]) < Number(a.StartTime.split(":")[0])) {
+                      return 1
+                  } else {
+                      return -1
+                  }
+              }
+              else {
+                  return 0
+              }
+          });
         });
         setAdminData(allData);
         setIsLoader(false);
       });
   };
+
+  function toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
+  }
 
   const getAdminRoll = () => {
     let uid = firebase.auth()?.currentUser?.uid;
@@ -101,6 +148,7 @@ const ViewBooking = () => {
         <div className="align">
           <h2 className="header">Bookings</h2>
         </div>
+        <div  style={{overflow: 'scroll', height: "70%", paddingBottom: 20, paddingTop: 20}}>
         <Card
           elevation={20}
           style={{
@@ -129,9 +177,9 @@ const ViewBooking = () => {
                           <th style={{ textAlign: "center" }}>Id No</th>
                           <th style={{ textAlign: "center" }}>Location</th>
                           <th style={{ textAlign: "center" }}>Slot</th>
+                          <th style={{ textAlign: "center" }}>Date</th>
                           <th style={{ textAlign: "center" }}>Start Time</th>
                           <th style={{ textAlign: "center" }}>End Time</th>
-                          <th style={{ textAlign: "center" }}>Date</th>
                         </tr>
                       </thead>
                       {userData && Object.keys(userData)?.map((newData, i) => {
@@ -139,19 +187,19 @@ const ViewBooking = () => {
                           <tr key={i}>
                             <td style={{ textAlign: "center" }}>{i}</td>
                             <td style={{ textAlign: "center" }}>
-                              {userData[newData].Location}
+                              {toTitleCase(userData[newData].Location)}
                             </td>
                             <td style={{ textAlign: "center" }}>
                              Num of Slot {userData[newData].Slots}
+                            </td>
+                            <td style={{ textAlign: "center" }}>
+                              {userData[newData].selectDate}
                             </td>
                             <td style={{ textAlign: "center" }}>
                               {userData[newData].StartTime}
                             </td>
                             <td style={{ textAlign: "center" }}>
                               {userData[newData].EndTime}
-                            </td>
-                            <td style={{ textAlign: "center" }}>
-                              {userData[newData].selectDate}
                             </td>
                           </tr>
                           );
@@ -187,9 +235,9 @@ const ViewBooking = () => {
                           <th style={{ textAlign: "center" }}>Id No</th>
                           <th style={{ textAlign: "center" }}>Location</th>
                           <th style={{ textAlign: "center" }}>Slot</th>
+                          <th style={{ textAlign: "center" }}>Date</th>
                           <th style={{ textAlign: "center" }}>Start Time</th>
                           <th style={{ textAlign: "center" }}>End Time</th>
-                          <th style={{ textAlign: "center" }}>Date</th>
                         </tr>
                       </thead>
                       {adminData && Object.keys(adminData).length > 0
@@ -201,19 +249,19 @@ const ViewBooking = () => {
                                   {i}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
-                                  {adminData[data].Location}
+                                  {toTitleCase(adminData[data].Location)}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
                                 Num of Slot {adminData[data].Slots}
+                                </td>
+                                <td style={{ textAlign: "center" }}>
+                                  {adminData[data].selectDate}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
                                   {adminData[data].StartTime}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
                                   {adminData[data].EndTime}
-                                </td>
-                                <td style={{ textAlign: "center" }}>
-                                  {adminData[data].selectDate}
                                 </td>
                               </tr>
                             );
@@ -225,6 +273,7 @@ const ViewBooking = () => {
             )
           ) : null}
         </Card>
+        </div>
       </Card>
     </div>
   );
