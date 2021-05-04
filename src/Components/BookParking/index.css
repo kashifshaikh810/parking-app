@@ -26,13 +26,13 @@ body{
 
 .main {
   margin-left: 14px;
+  margin-top: 20px;
 }
 
 .para {
   display: flex;
   margin-left: 12px;
   margin: 0;
-  padding: 0%;
 }
 
 .iconContainer {
@@ -61,8 +61,11 @@ body{
 
 .paraChild {
   margin-left: 6px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .paraParent {
   font-weight: bold;
+  margin: 0;
 }

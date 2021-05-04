@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import firebase from "firebase/app";
 import Para from "../ParaGraph/index";
 
-const List = ({ item, handleReply, index, id, toTitleCase }) => {
+const List = ({ item, handleReply, index, id }) => {
   const [reply, setReply] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [adminRoll, setAdminRoll] = useState("");
@@ -17,6 +17,15 @@ const List = ({ item, handleReply, index, id, toTitleCase }) => {
     setIsLoading(true);
     setReply("");
   };
+
+  function toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
+  }
 
   const getAdminRoll = () => {
     let uid = firebase.auth()?.currentUser?.uid;
@@ -58,7 +67,7 @@ const List = ({ item, handleReply, index, id, toTitleCase }) => {
       > 
       { adminRoll === 'admin@mail.com' ?
        <div>
-          <p style={{textAlign: 'right'}}>Feed-Back By <b> {item.firstName} {item.lastName} </b></p>
+          <p style={{textAlign: 'right'}}>Feed-Back By <b> {toTitleCase(item.firstName)} {toTitleCase(item.lastName)} </b></p>
         </div>
         : []
       }

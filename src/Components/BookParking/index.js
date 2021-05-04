@@ -40,24 +40,24 @@ function BookParking() {
             ) : (
               getData?.map((item, index) => {
                 return(
-                  <Card elevation={12} style={{width: '95%', margin: 20, marginTop: 10}}>
+                  <Card elevation={12} style={{width: '95%', margin: 20, marginTop: 10, height: '10vh'}}>
                   <div className="main">  
                   <div className="para">
                     <p className="paraParent">Name :</p>
                     <p className="paraChild">{item.location}</p>
                   </div>
+                  <div className="para">
+                    <p className="paraParent"> Address :</p>
+                    <p className="paraChild">{item.address}</p>
+                  </div>
                       <div 
-       style={{position: 'relative', left: '90%', top: 0, bottom: 0, right: 0,
+       style={{position: 'relative', left: '90%', top: -42, bottom: 0, right: 0,
         width: 40, height: 40, backgroundColor: '#c2185b', display: 'flex', justifyContent: 'center', alignItems: 'center',
         borderRadius: 20, cursor: 'pointer'
       }}
        onClick={() => goToAtriumMall(item, index)}>
                         <Launch style={{color: '#f1f1f1'}}/>
                       </div>
-                  <div className="para">
-                    <p className="paraParent"> Address :</p>
-                    <p className="paraChild">{item.address}</p>
-                  </div>
                 </div>
                 </Card>
               );

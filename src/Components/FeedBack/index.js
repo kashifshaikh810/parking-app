@@ -88,14 +88,7 @@ function FeedBack() {
     getAdminData();
   }, [isLoading]);
 
-  function toTitleCase(str) {
-    return str.replace(
-      /\w\S*/g,
-      function(txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      }
-    );
-  }
+ 
 
   const handleReply = (event, index) => {
     event.preventDefault();
@@ -196,7 +189,6 @@ function FeedBack() {
                       index={index}
                       handleReply={handleReply}
                       adminRoll={adminRoll}
-                      toTitleCase={toTitleCase}
                     />
                   );
                 })

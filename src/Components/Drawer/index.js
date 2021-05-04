@@ -62,6 +62,7 @@ const DrawerHome = () => {
 
   const viewLocationsHandler = () => {
     history.push("/viewaddlocations");
+    setOpen(false);
   };
  
   const handleAddLocation = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CircularProgress } from "@material-ui/core";
+import { Button, Card, CircularProgress } from "@material-ui/core";
 import firebase from "firebase/app";
 
 const ViewUsers = () => {
@@ -17,6 +17,15 @@ const ViewUsers = () => {
         setIsLoading(false);
       });
   };
+
+  function toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
+  }
 
   useEffect(() => {
     getAllUsers();
@@ -69,15 +78,19 @@ const ViewUsers = () => {
                   <th style={{ textAlign: "center" }}>Email</th>
                   <th style={{ textAlign: "center" }}>First Name</th>
                   <th style={{ textAlign: "center" }}>Last Name</th>
+                  <th style={{ textAlign: "center" }}>Option</th>
                 </tr>
               </thead>
               {newArr.map((data) => {
                 return (
                   data.email !== 'admin@mail.com' ?
                   <tr>
-                    <td style={{ textAlign: "center" }}>{data.email}</td>
-                    <td style={{ textAlign: "center" }}>{data.firstName}</td>
-                    <td style={{ textAlign: "center" }}>{data.lastName}</td>
+                    <td style={{ textAlign: "center" }}>{toTitleCase(data.email)}</td>
+                    <td style={{ textAlign: "center" }}>{toTitleCase(data.firstName)}</td>
+                    <td style={{ textAlign: "center" }}>{toTitleCase(data.lastName)}</td>
+                    <td style={{ textAlign: "center" }}>
+                      <Button variant="contained">Block</Button>
+                    </td>
                   </tr>
                   : null
                 );

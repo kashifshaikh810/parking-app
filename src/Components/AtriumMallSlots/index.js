@@ -41,7 +41,8 @@ function AtriumMall() {
   const [err, setErr] = useState("");
   const classes = useStyles();
   const [bookSuccess, setBookSuccess] = useState("");
-
+  const [userDataFirstName, setUserDataFirstName] = useState("");
+  const [userDataLastName, setUserDataLastName] = useState("");
   
   useEffect(() => {
     let noOfSlots = Number(localStorage.getItem('slots'));
@@ -50,6 +51,15 @@ function AtriumMall() {
       data.push({ title: i, booked: booked})
       setArr(data)
     }
+    let uid = firebase.auth()?.currentUser?.uid;
+    firebase
+      .database()
+      .ref(`/newUser/${uid}`)
+      .on("value", (snapshot) => {
+        let snap = snapshot.val() ? snapshot.val() : [];
+        setUserDataFirstName(snap.firstName)
+        setUserDataLastName(snap.lastName)
+      })
   }, []);
 
   useEffect(() => {
@@ -133,6 +143,8 @@ function AtriumMall() {
         Location: location,
         EndTime: seletedHours,
         Slots: slots,
+        firstName: userDataFirstName,
+        lastName: userDataLastName,
       });
       setSeletedHours("");
       setSeletedTime("");
@@ -163,12 +175,12 @@ function AtriumMall() {
               justifyContent: "center",
               alignItems: "center",
               width: "20%",
-              borderBottom: "1px solid #b3b3b3",
+              // borderBottom: "1px solid #b3b3b3",
               marginBottom: 15,
             }}
           >
             <h2 className="locationHead">Your Location :</h2>
-            <p style={{ marginLeft: 7 }}>{location}</p>
+            <p style={{ marginLeft: 7, width: 50 }}>{location}</p>
           </div>
         </div>
         <form className={classes.container} noValidate>

@@ -233,6 +233,7 @@ const ViewBooking = () => {
                       <thead>
                         <tr>
                           <th style={{ textAlign: "center" }}>Id No</th>
+                        <th style={{ textAlign: "center" }}>User Name</th>
                           <th style={{ textAlign: "center" }}>Location</th>
                           <th style={{ textAlign: "center" }}>Slot</th>
                           <th style={{ textAlign: "center" }}>Date</th>
@@ -247,6 +248,10 @@ const ViewBooking = () => {
                               <tr>
                                 <td style={{ textAlign: "center" }}>
                                   {i}
+                                </td>
+                                 <td style={{ textAlign: "center" }}>
+                                  {toTitleCase(adminData[data].firstName)}
+                                  {adminData[data].lastName}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
                                   {toTitleCase(adminData[data].Location)}
@@ -268,7 +273,7 @@ const ViewBooking = () => {
                           })
                         : null}
                     </table>
-                ) : null}
+                ) : <p>ddd</p>}
               </>
             )
           ) : null}

@@ -38,6 +38,15 @@ const ViewAddLocations =  () => {
         })
     },[])
 
+    function toTitleCase(str) {
+      return str.replace(
+        /\w\S*/g,
+        function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+      );
+    }
+
     const deleted = (index) => {
         firebase.database().ref(`/locations/${keys[index]}`).remove()
     }
@@ -49,7 +58,7 @@ const ViewAddLocations =  () => {
             <h2 className="header">View Added Locations</h2>
           </div>
           { Object.keys(newData).length > 0 ? isLoading ? (
-                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '48vh'}}>
+                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '48vh', }}>
                       <CircularProgress color="secondary" />
                   </div>
               ) : (
@@ -67,11 +76,11 @@ const ViewAddLocations =  () => {
           {newData.map((item, index) => (
             <StyledTableRow key={item.location}>
               <StyledTableCell component="th" scope="row">
-                {item.location}
+                {toTitleCase(item.location)}
               </StyledTableCell>
-              <StyledTableCell>{item.address}</StyledTableCell>
+              <StyledTableCell>{toTitleCase(item.address)}</StyledTableCell>
               <StyledTableCell>{item.slots}</StyledTableCell>
-              <Button style={{backgroundColor: 'red'}} onClick={() => deleted(index)}>Delete</Button>
+              <Button style={{backgroundColor: 'red', textAlign: 'center', marginTop: 10}} onClick={() => deleted(index)}>Delete</Button>
             </StyledTableRow>
           ))}
         </TableBody>
