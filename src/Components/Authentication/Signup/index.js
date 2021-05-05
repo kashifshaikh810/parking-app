@@ -18,6 +18,7 @@ function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const block = false
     if (firstName && lastName && email && password) {
       try {
         await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -27,6 +28,7 @@ function SignUp() {
           lastName,
           email,
           password,
+          block: block
         });
         setFirstName("");
         setLastName("");

@@ -12,11 +12,23 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [errMyMsg, setErrMyMsg] = useState("");
+  const [validationError, setvalidationError] = useState("");
   let history = useHistory();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (email && password) {
+    let ifBlock
+    firebase.database().ref('/newUser/').on('value', (snap) => {
+      Object.keys(snap.val()).filter(user => {
+        if (snap.val()[user].email === email && snap.val()[user].block) {
+            ifBlock = snap.val()[user].email
+            setvalidationError("You have been Blocked")
+          setvalidationError({ ...validationError, block: "You have been Blocked" })
+            firebase.auth().signOut()
+        }
+      })
+    })
+    if (email && password && ifBlock) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password).then(({user}) => {
           if(user.email === 'admin@mail.com'){
@@ -30,6 +42,7 @@ function SignIn() {
       } catch (err) {
         console.log(err?.message);
         setErrMsg(err?.message);
+      setvalidationError("You have been Blocked")
       }
     } else {
       setErrMyMsg("All Fields Are Required");
@@ -104,6 +117,9 @@ function SignIn() {
               </div>
               <div style={{ textAlign: "center", color: "red" }}>
                 <p>{errMyMsg}</p>
+              </div>
+              <div style={{ textAlign: "center", color: "red" }}>
+                <p>{validationError}</p>
               </div>
               <div className="btn">
                 <Button type="submit" variant="outlined" color="primary">

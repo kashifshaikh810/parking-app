@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, CircularProgress } from "@material-ui/core";
+import BlockUser from '../Block/BlockUser';
 import firebase from "firebase/app";
 
 const ViewUsers = () => {
@@ -12,7 +13,7 @@ const ViewUsers = () => {
       .database()
       .ref("/newUser/")
       .on("value", (snapshot) => {
-        const data = snapshot.val() ? Object.values(snapshot.val()) : [];
+        const data = snapshot.val() ? snapshot.val() : [];
         setNewArr(data);
         setIsLoading(false);
       });
@@ -81,15 +82,15 @@ const ViewUsers = () => {
                   <th style={{ textAlign: "center" }}>Option</th>
                 </tr>
               </thead>
-              {newArr.map((data) => {
+              {Object.keys(newArr).map((data) => {
                 return (
-                  data.email !== 'admin@mail.com' ?
+                  newArr[data].email !== 'admin@mail.com' ?
                   <tr>
-                    <td style={{ textAlign: "center" }}>{toTitleCase(data.email)}</td>
-                    <td style={{ textAlign: "center" }}>{toTitleCase(data.firstName)}</td>
-                    <td style={{ textAlign: "center" }}>{toTitleCase(data.lastName)}</td>
+                    <td style={{ textAlign: "center" }}>{toTitleCase(newArr[data].email)}</td>
+                    <td style={{ textAlign: "center" }}>{toTitleCase(newArr[data].firstName)}</td>
+                    <td style={{ textAlign: "center" }}>{toTitleCase(newArr[data].lastName)}</td>
                     <td style={{ textAlign: "center" }}>
-                      <Button variant="contained">Block</Button>
+                        <BlockUser data={data} item={newArr[data]}/>
                     </td>
                   </tr>
                   : null
