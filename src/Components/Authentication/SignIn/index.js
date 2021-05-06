@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import "./index.css";
 import firebase from "firebase";
 import Header from "../../Header/index";
@@ -23,30 +23,28 @@ function SignIn() {
         if (snap.val()[user].email === email && snap.val()[user].block) {
             ifBlock = snap.val()[user].email
             setvalidationError("You have been Blocked")
-          setvalidationError({ ...validationError, block: "You have been Blocked" })
-            firebase.auth().signOut()
-        }
+          }
       })
     })
-    if (email && password && ifBlock) {
+    if (email && password && !ifBlock) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password).then(({user}) => {
-          if(user.email === 'admin@mail.com'){
-            setEmail("");
-            setPassword("");
-            history.push("/viewbooking");
-          }else{
-            history.push("/bookparking");
-          }
-        })
-      } catch (err) {
-        console.log(err?.message);
-        setErrMsg(err?.message);
-      setvalidationError("You have been Blocked")
-      }
+            if(user.email === 'admin@mail.com'){
+              setEmail("");
+              setPassword("");
+              history.push("/viewbooking");
+            }else{
+              history.push("/bookparking");
+            }
+          })
+        } catch (err) {
+          console.log(err);
+          setErrMsg(err?.message);
+        }
     } else {
       setErrMyMsg("All Fields Are Required");
-    }
+      setvalidationError("You have been Blocked")
+  }
   };
 
   const emailHandleChange = (event) => {

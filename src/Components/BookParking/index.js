@@ -24,9 +24,8 @@ function BookParking() {
         setIsLoading(false)
       }, 1500);
     })
-  },[])
+  },[window.location.pathname])
   
-
   return (
     <div className="bookParking">
       <Card elevation={3} className="parkingCard">

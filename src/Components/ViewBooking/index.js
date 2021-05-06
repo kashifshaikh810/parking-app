@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CircularProgress } from "@material-ui/core";
 import "./index.css";
 import firebase from "firebase/app";
+import { useHistory } from 'react-router-dom'; 
 import moment from "moment";
 
 var format = "hh:mm:ss";
@@ -12,6 +13,7 @@ const ViewBooking = () => {
   const [isLoader, setIsLoader] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [adminRoll, setAdminRoll] = useState("");
+  let history = useHistory()
 
   const getUserData = () => {
     setIsLoading(true)
@@ -140,6 +142,7 @@ const ViewBooking = () => {
     getAdminData();
     getUserData();
     getAdminRoll();
+    window.history.pushState({}, '', '/viewbooking')
   }, [isLoading]);
 
   return (
@@ -174,7 +177,7 @@ const ViewBooking = () => {
                     <table className="customers" >
                       <thead>
                         <tr>
-                          <th style={{ textAlign: "center" }}>Id No</th>
+                          <th style={{ textAlign: "center" }}>#</th>
                           <th style={{ textAlign: "center" }}>Location</th>
                           <th style={{ textAlign: "center" }}>Slot</th>
                           <th style={{ textAlign: "center" }}>Date</th>
@@ -185,12 +188,12 @@ const ViewBooking = () => {
                       {userData && Object.keys(userData)?.map((newData, i) => {
                         return ( 
                           <tr key={i}>
-                            <td style={{ textAlign: "center" }}>{i}</td>
+                            <td style={{ textAlign: "center" }}>{i+1}</td>
                             <td style={{ textAlign: "center" }}>
                               {toTitleCase(userData[newData].Location)}
                             </td>
                             <td style={{ textAlign: "center" }}>
-                             Num of Slot {userData[newData].Slots}
+                             {userData[newData].Slots}
                             </td>
                             <td style={{ textAlign: "center" }}>
                               {userData[newData].selectDate}
@@ -232,7 +235,7 @@ const ViewBooking = () => {
                     <table className="customers">
                       <thead>
                         <tr>
-                          <th style={{ textAlign: "center" }}>Id No</th>
+                          <th style={{ textAlign: "center" }}>#</th>
                         <th style={{ textAlign: "center" }}>User Name</th>
                           <th style={{ textAlign: "center" }}>Location</th>
                           <th style={{ textAlign: "center" }}>Slot</th>
@@ -247,7 +250,7 @@ const ViewBooking = () => {
                             return (
                               <tr>
                                 <td style={{ textAlign: "center" }}>
-                                  {i}
+                                  {i+1}
                                 </td>
                                  <td style={{ textAlign: "center" }}>
                                   {toTitleCase(adminData[data].firstName)}
@@ -257,7 +260,7 @@ const ViewBooking = () => {
                                   {toTitleCase(adminData[data].Location)}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
-                                Num of Slot {adminData[data].Slots}
+                                {adminData[data].Slots}
                                 </td>
                                 <td style={{ textAlign: "center" }}>
                                   {adminData[data].selectDate}

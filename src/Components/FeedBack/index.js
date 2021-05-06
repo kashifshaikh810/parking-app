@@ -86,6 +86,7 @@ function FeedBack() {
     getData();
     getAdminRoll();
     getAdminData();
+    window.history.pushState({}, '', '/feedback')
   }, [isLoading]);
 
  

@@ -113,16 +113,16 @@ const AddLocations = () => {
                 <MenuItem>
                   <em>Select Slot</em>
                 </MenuItem>
-                <MenuItem value={1}><span style={{ cursor: "pointer" }}></span>num of Slots 1</MenuItem>
-                <MenuItem value={2}><span style={{ cursor: "pointer" }}></span>num of Slots 2</MenuItem>
-                <MenuItem value={3}><span style={{ cursor: "pointer" }}></span>num of Slots 3</MenuItem>
-                <MenuItem value={4}><span style={{ cursor: "pointer" }}></span>num of Slots 4</MenuItem>
-                <MenuItem value={5}><span style={{ cursor: "pointer" }}></span>num of Slots 5</MenuItem>
-                <MenuItem value={6}><span style={{ cursor: "pointer" }}></span>num of Slots 6</MenuItem>
-                <MenuItem value={7}><span style={{ cursor: "pointer" }}></span>num of Slots 7</MenuItem>
-                <MenuItem value={8}><span style={{ cursor: "pointer" }}></span>num of Slots 8</MenuItem>
-                <MenuItem value={9}><span style={{ cursor: "pointer" }}></span>num of Slots 9</MenuItem>
-                <MenuItem value={10}><span style={{ cursor: "pointer" }}></span>num of Slots 10</MenuItem>
+                <MenuItem value={1}><span style={{ cursor: "pointer" }}></span> 1</MenuItem>
+                <MenuItem value={2}><span style={{ cursor: "pointer" }}></span> 2</MenuItem>
+                <MenuItem value={3}><span style={{ cursor: "pointer" }}></span> 3</MenuItem>
+                <MenuItem value={4}><span style={{ cursor: "pointer" }}></span> 4</MenuItem>
+                <MenuItem value={5}><span style={{ cursor: "pointer" }}></span> 5</MenuItem>
+                <MenuItem value={6}><span style={{ cursor: "pointer" }}></span> 6</MenuItem>
+                <MenuItem value={7}><span style={{ cursor: "pointer" }}></span> 7</MenuItem>
+                <MenuItem value={8}><span style={{ cursor: "pointer" }}></span> 8</MenuItem>
+                <MenuItem value={9}><span style={{ cursor: "pointer" }}></span> 9</MenuItem>
+                <MenuItem value={10}><span style={{ cursor: "pointer" }}></span> 10</MenuItem>
               </Select>
             </FormControl>
           </div>
