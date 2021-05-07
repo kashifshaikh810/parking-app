@@ -15,48 +15,48 @@ function SignIn() {
   const [validationError, setvalidationError] = useState("");
   let history = useHistory();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    let ifBlock
+    let ifBlock 
     firebase.database().ref('/newUser/').on('value', (snap) => {
       Object.keys(snap.val()).filter(user => {
-        if (snap.val()[user].email === email && snap.val()[user].block) {
+        if (snap.val()[user].email === email && snap.val()[user]?.block) {
             ifBlock = snap.val()[user].email
             setvalidationError("You have been Blocked")
           }
-      })
-    })
-    if (email && password && !ifBlock) {
-      try {
-        await firebase.auth().signInWithEmailAndPassword(email, password).then(({user}) => {
-            if(user.email === 'admin@mail.com'){
+        })
+        if (!ifBlock) {
+            firebase.auth().signInWithEmailAndPassword(email, password).then(({user}) => {
+              if(user.email === 'admin@mail.com'){
+                history.push("/viewbooking");
+              }else{
+                history.push("/bookparking");
+              }
               setEmail("");
               setPassword("");
-              history.push("/viewbooking");
-            }else{
-              history.push("/bookparking");
-            }
-          })
-        } catch (err) {
-          console.log(err);
-          setErrMsg(err?.message);
-        }
-    } else {
-      setErrMyMsg("All Fields Are Required");
-      setvalidationError("You have been Blocked")
-  }
+              setEmail("");
+              setvalidationError("");
+            })
+            .catch((err) => {
+              console.log(err);
+              setErrMsg(err?.message);
+            })
+      }
+    })
   };
 
   const emailHandleChange = (event) => {
     setEmail(event.target.value);
     setErrMsg("");
     setErrMyMsg("");
+    setvalidationError("");
   };
 
   const passwordHandleChange = (event) => {
     setPassword(event.target.value);
     setErrMsg("");
     setErrMyMsg("");
+    setvalidationError("");
   };
 
   useEffect(() => {

@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Card, CircularProgress } from "@material-ui/core";
 import "./index.css";
 import firebase from "firebase/app";
-import { useHistory } from 'react-router-dom'; 
-import moment from "moment";
-
-var format = "hh:mm:ss";
 
 const ViewBooking = () => {
   const [userData, setUserData] = useState([]);
@@ -13,7 +9,6 @@ const ViewBooking = () => {
   const [isLoader, setIsLoader] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [adminRoll, setAdminRoll] = useState("");
-  let history = useHistory()
 
   const getUserData = () => {
     setIsLoading(true)
@@ -30,25 +25,10 @@ const ViewBooking = () => {
           add.forEach((item) => {
             user.push(item)
           })
-          // user = user.sort(function compare(a, b) {
-          //   let dateA = new Date(b.selectDate)
-          //   let dateB = new Date(a.selectDate)
-          //   return dateA - dateB;
-          // });
 
-          // user = user.sort(function compare(a, b) {
-          //   let get = new Date(b.StartTime).getTime()
-          //   let getTwo = new Date(a.StartTime).getTime()
-          //   let dateA = new Date(a.selectDate + " " + getTwo)
-          //   let dateB = new Date(b.selectDate + " " + get)
-          //   return dateB - dateA;
-          // }) 
-
-          let array = [...user];
         user = user.sort((a, b) => {
             return new Date(b.selectDate).getTime() - new Date(a.selectDate).getTime()
         });
-        console.log("time", array)
         user = user.sort((a, b) => {
             if (new Date(a.selectDate).getTime() === new Date(b.selectDate).getTime()) {
                 if (Number(b.StartTime.split(":")[0]) < Number(a.StartTime.split(":")[0])) {
@@ -61,17 +41,12 @@ const ViewBooking = () => {
                 return 0
             }
         });
-
-          setUserData(user)
-          setIsLoading(false)
-          })
+      })
+      setUserData(user)
+      setIsLoading(false)
       });
   };
-  // user = user.sort(function compare(a, b) {
-  //   let dateA = moment(a.selectDate).format('YYYY-MM-DD');
-  //   let dateB = moment(b.selectDate).format('YYYY-MM-DD');
-  //   return dateA - dateB;
-  // });
+ 
   const getAdminData = () => {
     setIsLoader(true);
     firebase
@@ -160,7 +135,7 @@ const ViewBooking = () => {
           }}
         >
           {adminRoll !== "admin@mail.com" ? (
-            isLoading ? (
+          isLoading ? (
               <div
                 style={{
                   display: "flex",

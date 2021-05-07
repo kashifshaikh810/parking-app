@@ -30,6 +30,7 @@ const ViewUsers = () => {
 
   useEffect(() => {
     getAllUsers();
+    window.history.pushState({}, '', '/viewusers')
   }, [isLoading]);
 
   return (

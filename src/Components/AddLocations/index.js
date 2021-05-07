@@ -69,9 +69,8 @@ const AddLocations = () => {
     setErrMyMsg("");
     setSlots('')
     setSuccess('')
+    window.history.pushState({}, '', '/addlocation')
   }, []);
-
-  console.log(slots)
 
     return(
         <div style={{display: 'flex', justifyContent: 'center', backgroundColor: 'rgb(48, 48, 48)', height: '90.5vh'}}>

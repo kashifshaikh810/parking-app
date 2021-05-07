@@ -36,6 +36,7 @@ const ViewAddLocations =  () => {
             setNewData(data);
             setIsloading(false);
         })
+    window.history.pushState({}, '', '/viewaddlocations')
     },[])
 
     function toTitleCase(str) {
