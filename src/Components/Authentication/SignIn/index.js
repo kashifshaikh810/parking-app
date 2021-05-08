@@ -22,7 +22,7 @@ function SignIn() {
       Object.keys(snap.val()).filter(user => {
         if (snap.val()[user].email === email && snap.val()[user]?.block) {
             ifBlock = snap.val()[user].email
-            setvalidationError("You have been Blocked")
+            setvalidationError("Admin has blocked you")
           }
         })
         if (!ifBlock) {

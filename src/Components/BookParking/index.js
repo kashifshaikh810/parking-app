@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from "react";
 import { useHistory } from "react-router-dom";
-import { Button, Card, CircularProgress } from "@material-ui/core";
+import { Card, CircularProgress } from "@material-ui/core";
 import { Launch } from "@material-ui/icons";
 import "./index.css";
 import firebase from "firebase";
@@ -75,53 +75,3 @@ function BookParking() {
 }
 
 export default BookParking;
-
-
-// spire 
-  {/* <div className="main">
-          <div className="para">
-            <p className="paraParent">Name :</p>
-            <p className="paraChild">Dolmen Mall</p>
-          </div>
-          <div className="para">
-            <p className="paraParent">Address :</p>
-            <p className="paraChild">Clifton</p>
-            <div
-              style={{
-                position: "absolute",
-                top: "54%",
-                left: "85%",
-                right: 0,
-                bottom: 0,
-              }}
-            >
-              <div className="content" onClick={goToDolmenMall}>
-                <Launch className="myIcon" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="main">
-          <div className="para">
-            <p className="paraParent">Name :</p>
-            <p className="paraChild">Ocean Mall</p>
-          </div>
-          <div className="para">
-            <p className="paraParent">Address :</p>
-            <p className="paraChild">Clifton, Teen Talwar</p>
-            <div
-              style={{
-                position: "absolute",
-                top: "70%",
-                left: "85%",
-                right: 0,
-                bottom: 0,
-              }}
-            >
-              <div className="content" onClick={goToOceanMall}>
-                <Launch className="myIcon" />
-              </div>
-            </div>
-          </div>
-        </div> */}

@@ -5,7 +5,7 @@ import firebase from "firebase/app";
 const BlockUser = ({data, item}) => {
 
     useEffect(() => {
-    window.history.pushState({}, '', '/viewusers')
+        window.history.pushState({}, '', '/viewusers')
     },[])
 
     const forceBlock = () => {
@@ -13,7 +13,9 @@ const BlockUser = ({data, item}) => {
             {
                 block: !item.block
             },
-        )}
+        )
+        window.history.pushState({}, '', '/viewusers')
+    }
 
     return (
         <div>
