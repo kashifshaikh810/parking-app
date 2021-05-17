@@ -21,18 +21,18 @@ import { CircularProgress } from '@material-ui/core';
 function Routing() {
   const [uid, setUid] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [adminRoll, setAdminRoll] = useState('');
+  // const [adminRoll, setAdminRoll] = useState('');
 
-  const getAdminRoll = () => {
-    let uid = firebase.auth()?.currentUser?.uid;
-    firebase
-      .database()
-      .ref(`/newUser/${uid}`)
-      .on('value', (snapshot) => {
-        let data = snapshot.val() ? Object.values(snapshot.val()) : [];
-        setAdminRoll(data[0]);
-      });
-  };
+  // const getAdminRoll = () => {
+  //   let uid = firebase.auth()?.currentUser?.uid;
+  //   firebase
+  //     .database()
+  //     .ref(`/newUser/${uid}`)
+  //     .on('value', (snapshot) => {
+  //       let data = snapshot.val() ? Object.values(snapshot.val()) : [];
+  //       setAdminRoll(data[0]);
+  //     });
+  // };
 
   useEffect(() => {
     setIsLoading(true);
@@ -41,7 +41,7 @@ function Routing() {
       setUid(uid);
       setIsLoading(false);
     });
-    getAdminRoll();
+    // getAdminRoll();
   }, []);
 
   return (
